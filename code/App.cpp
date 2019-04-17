@@ -1,5 +1,9 @@
 #include <iostream>
-//#include <vector>
+#include <cstdlib>
+#include <vector>
+#include <stdio.h>      /* printf, scanf, puts, NULL */
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
 #include "App.h"
 
 
@@ -17,40 +21,57 @@ void timer(int id){
 
 
 App::App(int argc, char** argv, int width, int height, const char* title): GlutApp(argc, argv, width, height, title){
-        for(double offset = 0; offset <= 4.0; offset += 0.25) {
-                backs.push_back(new TexRect("bg.png", -2 - offset, 1, 4, 2));
-                backs.push_back(new TexRect("bg.png",  2 - offset, 1, 4, 2));
-                //The -0.01 b/c there was a small gap in between the pictures w/o it.
+    //5x5 of blocks for now
+    float wid = 4/5.0;    //0.8
+    float hei = 2/5.0;   //0.4
+    srand( time(NULL) );
+    grid.push_back(new Block(-2, 1, wid, hei, 1, 0, 0));
+    /*for(int i = 0; i < 5; i++) {
+        for(int j = 0; j < 5; j++) {
+            float red = rand() % 2;
+            float green = rand() % 2;
+            float blue = rand() % 2;
+            // std::cout << "x: " << i*wid-2 << ", y: " << j*-hei+1 << std::endl;
+            grid.push_back(new Block(i*wid - 2, j*-hei + 1, wid, hei, red, green, blue));
         }
+    }*/
 }
 
 void App::draw() {
-        if(counter >= backs.size()) counter = 0;
-        //std::cout <<"Drawing" <<std::endl;
-        /*for (int i = 0; i < back.size(); i++) {
-                back[i]->draw(0.0);
-        }  */ 
-        //back[0]->draw(0.0);   //Segmentation fault error
-        /*background = new TexRect("bg.png", -2 - offset, 1, 4, 2);
-        background->draw(0.0);
-        
-        background2 = new TexRect("bg.png", 2 - offset - 0.01, 1, 4, 2);
-        //The -0.01 b/c there was a small gap in between the pictures w/o it.
-        background2->draw(0.0);*/
-        
-        backs[counter++]->draw(0.0);
-        backs[counter++]->draw(0.0);
-        
-        kittie->draw(1.0);
-        //kittie->playLoop();   //ERROR: frozen on last cat-animation
-        //offset += 0.25;
-        
+    std::cout << "drawing" << std::endl;
+    for(int i = 0; i < grid.size(); i++) {
+        grid[i]->draw();
+    }
 }
 
 void App::keyDown(unsigned char key, float x, float y){
+    // std::cout <<"test" << std::endl;
     if (key == 27){
+        // std::cout <<"testing" << std::endl;
         exit(0);
     }
+    float a, b;
+    grid[0]->getCoord(a, b);
+    std::cout << "(x, y) before: (" << a << ", " << b << ")" << std::endl;
+    switch (key) {  //For Arrow keys:
+        case 100:   //Left
+            grid[0]->moveLeft();
+            draw();
+            break;
+        case 101:   //Up
+            grid[0]->moveUp();
+            draw();
+            break;
+        case 102:   //Right
+            grid[0]->moveRight();
+            draw();
+            break;
+        case 103:   //Down
+            grid[0]->moveDown();
+            draw();
+            break;
+    }
+    // std::cout << "(x, y) after: (" << a << ", " << b << ")" << std::endl;
 }
 
 App::~App(){

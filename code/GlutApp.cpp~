@@ -159,7 +159,7 @@ void GlutApp::glutKeyDownCB(unsigned char key, int x, int y){
     float mx = (float)x;
     float my = (float)y;
     windowToScene(mx, my);
-    // std::cout <<"testing " << key << std::endl;
+    std::cout <<"testing " << key << std::endl;
     singleton->keyDown(key, mx, my);
 }
 
