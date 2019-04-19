@@ -10,12 +10,21 @@
 
 class App: public GlutApp {
 std::vector<Block*> grid;
+TexRect* mushroom;
+Rect* projectile;
+AnimatedRect* explosion;
+float xpos, ypos;
+
+bool up, down, left, right;
+bool explode;
     
 public:
     
     App(int argc, char** argv, int width, int height, const char* title);
     
     void draw();
+
+    void keyUp(unsigned char key, float x, float y);
     
     void keyDown(unsigned char key, float x, float y);
     
