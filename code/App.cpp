@@ -5,9 +5,9 @@
 #include <sstream>
 #include <cstdlib>
 #include <vector>
-#include <stdio.h>      /* printf, scanf, puts, NULL */
-#include <stdlib.h>     /* srand, rand */
-#include <time.h>       /* time */
+// #include <stdio.h>      /* printf, scanf, puts, NULL */
+// #include <stdlib.h>     /* srand, rand */
+// #include <time.h>       /* time */
 #include "App.h"
 
 using namespace std;
@@ -26,28 +26,28 @@ void timer(int id){
 
     if (singleton->up){
         singleton->ypos +=0.05;
-        if(singleton->withinBounds(singleton->xpos, singleton->ypos)) {
+        if(singleton->withinBounds(singleton->xpos, singleton->ypos) && !singleton->touchWalls(singleton->xpos, singleton->ypos)) {
             singleton->projectile->setY(singleton->ypos);
             singleton->redraw();
         }
     }
     if (singleton->left){
         singleton->xpos -=0.05;
-        if(singleton->withinBounds(singleton->xpos, singleton->ypos)) {
+        if(singleton->withinBounds(singleton->xpos, singleton->ypos) && !singleton->touchWalls(singleton->xpos, singleton->ypos)) {
             singleton->projectile->setX(singleton->xpos);
             singleton->redraw();
         }
     }
     if (singleton->down){
         singleton->ypos -=0.05;
-        if(singleton->withinBounds(singleton->xpos, singleton->ypos)) {
+        if(singleton->withinBounds(singleton->xpos, singleton->ypos) && !singleton->touchWalls(singleton->xpos, singleton->ypos)) {
             singleton->projectile->setY(singleton->ypos);
             singleton->redraw();
         }
     }
     if (singleton->right){
         singleton->xpos +=0.05;
-        if(singleton->withinBounds(singleton->xpos, singleton->ypos)) {
+        if(singleton->withinBounds(singleton->xpos, singleton->ypos) && !singleton->touchWalls(singleton->xpos, singleton->ypos)) {
             singleton->projectile->setX(singleton->xpos);
             singleton->redraw();
         }
@@ -81,7 +81,7 @@ App::App(int argc, char** argv, int width, int height, const char* title): GlutA
     infile.close();
     // if(m == 1) { cout << ""}
     cout << "Choose from level 1 to " << m  << ": (Enter ints)"<< endl;
-    while(!(cin >> lvl)) {
+    while(!(cin >> lvl) || lvl < 1 || lvl > m) {
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         cout << "Integer only. Try Again: ";
@@ -89,16 +89,15 @@ App::App(int argc, char** argv, int width, int height, const char* title): GlutA
     cout << "You chose level " << lvl << "!" << endl;
     layout(lvl);
 
-    mushroom = new TexRect("mushroom.png", -0.25, 0.9, 0.5, 0.5);
-    projectile = new Rect(-0.05, -0.8, 0.1, 0.1);
-    projectile->setR(1.0);
-    projectile->setG(0.0);
-    projectile->setB(0.0);
+    // mushroom = new TexRect("mushroom.png", -0.25, 0.9, 0.5, 0.5);
+    // projectile = new Rect(-0.05, -0.8, 0.1, 0.1);
+    // projectile->setR(1.0);
+    // projectile->setG(0.0);
+    // projectile->setB(0.0);
     up = false;
     down = false;
     right = false;
     left = false;
-    explosion = new AnimatedRect("fireball.bmp", 6, 6, 50, true, true, -0.25, 0.9, 0.5, 0.5);
     explode = false;
     //5x5 of blocks for now
     // float wid = 4/5.0;    //0.8
@@ -138,13 +137,38 @@ void App::layout(int i) {
     // First line of textfile is the number of row followed by number of columns
     for(int i = 0; i < r; i++) {    // rows
         for(int j = 0; j < c; j++) {    // columns
+            float x = -mapHalfWidth+j*blockWidth;
+            float y = mapHalfHeight-i*blockHeight;
+            
             int temp;
             infile >> temp;
             cout << temp << " ";
             switch (temp) {
-                case 4: {   
+                case 1: {   // Starting the mouse: 
+                            projectile = new Rect(x, y, 0.1, 0.1);
+                            projectile->setR(1.0);
+                            projectile->setG(0.0);
+                            projectile->setB(0.0);
+                            break;
+                        }
+                case 2: {   // Goal: 
+                            mushroom = new TexRect("mushroom.png", x, y, blockWidth, blockHeight);
+                            // (const char* map_filename, int rows, int cols, int rate, bool visible=false, bool animated=false, float x=0, float y=0, float w=0.5, float h=0.5)
+                            explosion = new AnimatedRect("fireball.bmp", 6, 6, 50, true, true, x, y, blockWidth, blockHeight);
+                            // explode = false;
+                            break;
+                        }
+                case 3: {   // Cat or some patrolling bot here:
+                            // TODO
+                            break;
+                        }
+                case 4: {   // Walls that form the layout of the level: 
                             // cout << "block" << endl;
-                            map.push_back(new Rect(-mapHalfWidth+j*blockWidth, mapHalfHeight-i*blockHeight, blockWidth, blockHeight));
+                            map.push_back(new Rect(x, y, blockWidth, blockHeight));     //White walls
+                            break;
+                        }
+                case 5: {   // Poison? Some sort of obstacles that kills the mouse when touched!
+                            // TODO
                             break;
                         }
                 default: 
@@ -154,6 +178,20 @@ void App::layout(int i) {
         }
         cout << endl;
     }
+}
+
+bool App::touchWalls(float mx, float my) {
+    // cout << "Checking if touching walls" << endl;
+    for(int i = 0; i < map.size(); i++) {
+        // Checking all 4 corners:
+        if( map[i]->contains(mx, my) ||
+            map[i]->contains(mx+projectile->getW(), my) ||
+            map[i]->contains(mx+projectile->getW(), my-projectile->getH() ) ||
+            map[i]->contains(mx, my-projectile->getH() ) ) {
+            return true;
+        }
+    }
+    return false;
 }
 
 bool App::withinBounds(float mx, float my) {

@@ -29,6 +29,8 @@ public:
 
     void layout(int i);
 
+    bool touchWalls(float mx, float my);
+
     bool withinBounds(float mx, float my);
     
     void draw();

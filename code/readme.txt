@@ -30,3 +30,26 @@ Notes:
    from the App Store. Open it and let it set itself up. Then
    in the terminal type: xcode-select -install
    This will install the command line compiler tools on your Mac
+   
+CAT N' MOUSE GAME
+-----------------
+
+This is our clone of the Cat and Mouse game
+Team members: Benjamin Wang, Bruce Duong, Jonathon Arevalo.
+
+Use W/A/S/D or Arrow-Keys to move the Red Mouse to reach the Mushroom to pass 
+the level!
+
+maps folder holds the map. Inside the folder:
+
+0.txt holds the number of available maps. Remember to update this if you add
+more maps.
+
+1.txt and so on are the map layouts for each level.
+
+Using: 0 for empty space, 1 starting loc, 2 for ending loc, 3 for CAT, 
+4 for obstacles
+
+First line of map-layout textfile is the number of row followed by number of 
+columns
+
