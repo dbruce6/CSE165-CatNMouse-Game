@@ -13,6 +13,7 @@ class App: public GlutApp {
 float mapWidth, mapHeight, mapHalfWidth, mapHalfHeight;
 
 // std::vector<Block*> grid;
+std::vector<Rect*> map;
 
 TexRect* mushroom;
 Rect* projectile;

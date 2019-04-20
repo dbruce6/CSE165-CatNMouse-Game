@@ -78,16 +78,22 @@ App::App(int argc, char** argv, int width, int height, const char* title): GlutA
     int m, lvl;
     ifstream infile("maps/0.txt");
     infile >> m;
+    infile.close();
     // if(m == 1) { cout << ""}
     cout << "Choose from level 1 to " << m  << ": (Enter ints)"<< endl;
     while(!(cin >> lvl)) {
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Integer only. Try Again: ";
     }
-    layout(0);
+    cout << "You chose level " << lvl << "!" << endl;
+    layout(lvl);
 
     mushroom = new TexRect("mushroom.png", -0.25, 0.9, 0.5, 0.5);
     projectile = new Rect(-0.05, -0.8, 0.1, 0.1);
+    projectile->setR(1.0);
+    projectile->setG(0.0);
+    projectile->setB(0.0);
     up = false;
     down = false;
     right = false;
@@ -115,7 +121,39 @@ App::App(int argc, char** argv, int width, int height, const char* title): GlutA
 }
 
 void App::layout(int i) {
-    // TODO
+    string filename = "maps/" + to_string(i) + ".txt";
+    cout << "filename:\t" << filename << endl;
+    ifstream infile(filename);
+    int r, c;
+    if(infile >> r >> c) {
+        cout << "row, col:\t" << r << ", " << c << endl;
+    }
+    float blockHeight = mapHeight / r;
+    float blockWidth = mapWidth / c;
+    cout << "block w/h:\t" << blockWidth << ", " << blockHeight << endl;
+
+    // map/0.txt containsthe number of maps available besides itself
+    // map/1.txt and so on will contain the map/layout of the level
+    // Using: 0 for empty space, 1 starting loc, 2 for ending loc, 3 for CAT, 4 for obstacles
+    // First line of textfile is the number of row followed by number of columns
+    for(int i = 0; i < r; i++) {    // rows
+        for(int j = 0; j < c; j++) {    // columns
+            int temp;
+            infile >> temp;
+            cout << temp << " ";
+            switch (temp) {
+                case 4: {   
+                            // cout << "block" << endl;
+                            map.push_back(new Rect(-mapHalfWidth+j*blockWidth, mapHalfHeight-i*blockHeight, blockWidth, blockHeight));
+                            break;
+                        }
+                default: 
+                    // cout <<"Error " << temp << endl;
+                    break;
+            }
+        }
+        cout << endl;
+    }
 }
 
 bool App::withinBounds(float mx, float my) {
@@ -135,6 +173,9 @@ void App::draw() {
         mushroom->draw(0.1);
     }
     projectile->draw();
+    for(int i = 0; i < map.size(); i++) {
+        map[i]->draw();
+    }
 }
 
 void App::keyUp(unsigned char key, float x, float y) {
