@@ -218,7 +218,7 @@ void GlutApp::glutSpecialKeyDownCB(int key, int x, int y){
     float my = (float)y;
     windowToScene(mx, my);
     // std::cout <<"testing2 " << key << std::endl;
-    singleton->keyDown(key, mx, my);
+    singleton->specialKeyDown(key, mx, my);
 }
 
 void GlutApp::glutSpecialKeyUpCB(int key, int x, int y){

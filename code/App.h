@@ -9,7 +9,9 @@
 
 
 class App: public GlutApp {
+    
 std::vector<Block*> grid;
+
 TexRect* mushroom;
 Rect* projectile;
 AnimatedRect* explosion;
@@ -27,6 +29,10 @@ public:
     void keyUp(unsigned char key, float x, float y);
     
     void keyDown(unsigned char key, float x, float y);
+
+    void specialKeyUp(int key, float x, float y);
+    
+    void specialKeyDown(int key, float x, float y);
     
     ~App();
     
