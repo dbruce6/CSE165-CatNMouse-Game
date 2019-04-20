@@ -4,13 +4,15 @@
 #include "GlutApp.h"
 #include "AnimatedRect.h"
 #include "TexRect.h"
-#include "Block.h"
+// #include "Block.h"
+#include "Layout.h"
 #include "vector"
 
 
 class App: public GlutApp {
-    
-std::vector<Block*> grid;
+float mapWidth, mapHeight, mapHalfWidth, mapHalfHeight;
+
+// std::vector<Block*> grid;
 
 TexRect* mushroom;
 Rect* projectile;
@@ -23,6 +25,10 @@ bool explode;
 public:
     
     App(int argc, char** argv, int width, int height, const char* title);
+
+    void layout(int i);
+
+    bool withinBounds(float mx, float my);
     
     void draw();
 

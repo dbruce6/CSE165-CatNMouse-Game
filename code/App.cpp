@@ -1,4 +1,8 @@
 #include <iostream>
+#include <limits>
+#include <fstream>
+#include <string>
+#include <sstream>
 #include <cstdlib>
 #include <vector>
 #include <stdio.h>      /* printf, scanf, puts, NULL */
@@ -6,6 +10,7 @@
 #include <time.h>       /* time */
 #include "App.h"
 
+using namespace std;
 
 App* singleton;
 
@@ -21,24 +26,31 @@ void timer(int id){
 
     if (singleton->up){
         singleton->ypos +=0.05;
-        singleton->projectile->setY(singleton->ypos);
-        singleton->redraw();
+        if(singleton->withinBounds(singleton->xpos, singleton->ypos)) {
+            singleton->projectile->setY(singleton->ypos);
+            singleton->redraw();
+        }
     }
     if (singleton->left){
         singleton->xpos -=0.05;
-        singleton->projectile->setX(singleton->xpos);
-        singleton->redraw();
+        if(singleton->withinBounds(singleton->xpos, singleton->ypos)) {
+            singleton->projectile->setX(singleton->xpos);
+            singleton->redraw();
+        }
     }
     if (singleton->down){
         singleton->ypos -=0.05;
-        singleton->projectile->setY(singleton->ypos);
-        singleton->redraw();
+        if(singleton->withinBounds(singleton->xpos, singleton->ypos)) {
+            singleton->projectile->setY(singleton->ypos);
+            singleton->redraw();
+        }
     }
     if (singleton->right){
-        // std::cout << "testing right" << std::endl;
         singleton->xpos +=0.05;
-        singleton->projectile->setX(singleton->xpos);
-        singleton->redraw();
+        if(singleton->withinBounds(singleton->xpos, singleton->ypos)) {
+            singleton->projectile->setX(singleton->xpos);
+            singleton->redraw();
+        }
     }
 
     if(singleton->mushroom->contains(singleton->xpos, singleton->ypos)) {  
@@ -52,6 +64,28 @@ void timer(int id){
 
 
 App::App(int argc, char** argv, int width, int height, const char* title): GlutApp(argc, argv, width, height, title){
+    mapWidth = width/250.0;
+    mapHeight = height/250.0;
+    // cout << "width/height:\t" << mapWidth << "/" << mapHeight << endl;
+    mapHalfWidth = mapWidth/2.0;
+    mapHalfHeight = mapHeight/2.0;
+    // cout << mapHalfWidth << ", " << mapHalfHeight<<endl;
+    
+    // map/0.txt containsthe number of maps available besides itself
+    // map/1.txt and so on will contain the map/layout of the level
+    // Using: 0 for empty space, 1 starting loc, 2 for ending loc, 3 for CAT, 4 for obstacles
+    // First line of textfile is the number of row followed by number of columns
+    int m, lvl;
+    ifstream infile("maps/0.txt");
+    infile >> m;
+    // if(m == 1) { cout << ""}
+    cout << "Choose from level 1 to " << m  << ": (Enter ints)"<< endl;
+    while(!(cin >> lvl)) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
+    layout(0);
+
     mushroom = new TexRect("mushroom.png", -0.25, 0.9, 0.5, 0.5);
     projectile = new Rect(-0.05, -0.8, 0.1, 0.1);
     up = false;
@@ -78,6 +112,16 @@ App::App(int argc, char** argv, int width, int height, const char* title): GlutA
     singleton = this;
 
     timer(1);
+}
+
+void App::layout(int i) {
+    // TODO
+}
+
+bool App::withinBounds(float mx, float my) {
+    // cout << mx << ", " << my << endl;
+    // if(mx > mapHalfWidth) cout << "testing"<< endl;
+    return (mx >= -mapHalfWidth && mx+projectile->getW() <= mapHalfWidth && my-projectile->getH() >= -mapHalfHeight && my <= mapHalfHeight);
 }
 
 void App::draw() {
