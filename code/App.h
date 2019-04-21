@@ -18,7 +18,7 @@ std::vector<Rect*> map;
 TexRect* mushroom;
 Rect* projectile;
 AnimatedRect* explosion;
-float xpos, ypos;
+float xpos, ypos, speed;
 
 bool up, down, left, right;
 bool explode;

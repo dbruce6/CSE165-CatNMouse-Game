@@ -25,28 +25,28 @@ void timer(int id){
     singleton->xpos = singleton->projectile->getX();
 
     if (singleton->up){
-        singleton->ypos +=0.05;
+        singleton->ypos += singleton->speed;
         if(singleton->withinBounds(singleton->xpos, singleton->ypos) && !singleton->touchWalls(singleton->xpos, singleton->ypos)) {
             singleton->projectile->setY(singleton->ypos);
             singleton->redraw();
         }
     }
     if (singleton->left){
-        singleton->xpos -=0.05;
+        singleton->xpos -=singleton->speed;
         if(singleton->withinBounds(singleton->xpos, singleton->ypos) && !singleton->touchWalls(singleton->xpos, singleton->ypos)) {
             singleton->projectile->setX(singleton->xpos);
             singleton->redraw();
         }
     }
     if (singleton->down){
-        singleton->ypos -=0.05;
+        singleton->ypos -=singleton->speed;
         if(singleton->withinBounds(singleton->xpos, singleton->ypos) && !singleton->touchWalls(singleton->xpos, singleton->ypos)) {
             singleton->projectile->setY(singleton->ypos);
             singleton->redraw();
         }
     }
     if (singleton->right){
-        singleton->xpos +=0.05;
+        singleton->xpos +=singleton->speed;
         if(singleton->withinBounds(singleton->xpos, singleton->ypos) && !singleton->touchWalls(singleton->xpos, singleton->ypos)) {
             singleton->projectile->setX(singleton->xpos);
             singleton->redraw();
@@ -70,6 +70,8 @@ App::App(int argc, char** argv, int width, int height, const char* title): GlutA
     mapHalfWidth = mapWidth/2.0;
     mapHalfHeight = mapHeight/2.0;
     // cout << mapHalfWidth << ", " << mapHalfHeight<<endl;
+
+    speed = 0.05;
     
     // map/0.txt containsthe number of maps available besides itself
     // map/1.txt and so on will contain the map/layout of the level
@@ -197,6 +199,8 @@ bool App::touchWalls(float mx, float my) {
 bool App::withinBounds(float mx, float my) {
     // cout << mx << ", " << my << endl;
     // if(mx > mapHalfWidth) cout << "testing"<< endl;
+    // cout << "my\t" << my << ", H:\t" << projectile->getH() << endl;
+    // cout << "Lower-Height:\t" << my-projectile->getH() << endl;
     return (mx >= -mapHalfWidth && mx+projectile->getW() <= mapHalfWidth && my-projectile->getH() >= -mapHalfHeight && my <= mapHalfHeight);
 }
 
