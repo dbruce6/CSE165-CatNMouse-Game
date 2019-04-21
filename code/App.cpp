@@ -25,33 +25,24 @@ void timer(int id){
     singleton->xpos = singleton->projectile->getX();
 
     if (singleton->up){
-        singleton->ypos += singleton->speed;
-        if(singleton->withinBounds(singleton->xpos, singleton->ypos) && !singleton->touchWalls(singleton->xpos, singleton->ypos)) {
-            singleton->projectile->setY(singleton->ypos);
-            singleton->redraw();
-        }
+        singleton->ypos +=singleton->speed;
     }
     if (singleton->left){
         singleton->xpos -=singleton->speed;
-        if(singleton->withinBounds(singleton->xpos, singleton->ypos) && !singleton->touchWalls(singleton->xpos, singleton->ypos)) {
-            singleton->projectile->setX(singleton->xpos);
-            singleton->redraw();
-        }
     }
     if (singleton->down){
         singleton->ypos -=singleton->speed;
-        if(singleton->withinBounds(singleton->xpos, singleton->ypos) && !singleton->touchWalls(singleton->xpos, singleton->ypos)) {
-            singleton->projectile->setY(singleton->ypos);
-            singleton->redraw();
-        }
     }
     if (singleton->right){
         singleton->xpos +=singleton->speed;
-        if(singleton->withinBounds(singleton->xpos, singleton->ypos) && !singleton->touchWalls(singleton->xpos, singleton->ypos)) {
-            singleton->projectile->setX(singleton->xpos);
-            singleton->redraw();
-        }
     }
+
+    if(singleton->withinBounds(singleton->xpos, singleton->ypos) && !singleton->touchWalls(singleton->xpos, singleton->ypos)) {
+            singleton->projectile->setX(singleton->xpos);
+            singleton->projectile->setY(singleton->ypos);
+            singleton->redraw();
+    }
+    
 
     if(singleton->mushroom->contains(singleton->xpos, singleton->ypos)) {  
             singleton->explode = true;
@@ -186,10 +177,10 @@ bool App::touchWalls(float mx, float my) {
     // cout << "Checking if touching walls" << endl;
     for(int i = 0; i < map.size(); i++) {
         // Checking all 4 corners:
-        if( map[i]->contains(mx, my) ||
+        if( map[i]->contains(mx+speed, my) ||
             map[i]->contains(mx+projectile->getW(), my) ||
-            map[i]->contains(mx+projectile->getW(), my-projectile->getH() ) ||
-            map[i]->contains(mx, my-projectile->getH() ) ) {
+            map[i]->contains(mx+projectile->getW(), my-projectile->getH()+speed ) ||
+            map[i]->contains(mx+speed, my-projectile->getH()+speed ) ) {
             return true;
         }
     }
@@ -201,7 +192,7 @@ bool App::withinBounds(float mx, float my) {
     // if(mx > mapHalfWidth) cout << "testing"<< endl;
     // cout << "my\t" << my << ", H:\t" << projectile->getH() << endl;
     // cout << "Lower-Height:\t" << my-projectile->getH() << endl;
-    return (mx >= -mapHalfWidth && mx+projectile->getW() <= mapHalfWidth && my-projectile->getH() >= -mapHalfHeight && my <= mapHalfHeight);
+    return (mx >= -mapHalfWidth && mx+projectile->getW() <= mapHalfWidth && my-projectile->getH()+speed >= -mapHalfHeight && my <= mapHalfHeight);
 }
 
 void App::draw() {
