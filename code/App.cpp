@@ -25,28 +25,28 @@ void timer(int id){
     singleton->xpos = singleton->projectile->getX();
 
     if (singleton->up){
-        singleton->ypos +=0.05;
+        singleton->ypos +=0.01;
         if(singleton->withinBounds(singleton->xpos, singleton->ypos) && !singleton->touchWalls(singleton->xpos, singleton->ypos)) {
             singleton->projectile->setY(singleton->ypos);
             singleton->redraw();
         }
     }
     if (singleton->left){
-        singleton->xpos -=0.05;
+        singleton->xpos -=0.01;
         if(singleton->withinBounds(singleton->xpos, singleton->ypos) && !singleton->touchWalls(singleton->xpos, singleton->ypos)) {
             singleton->projectile->setX(singleton->xpos);
             singleton->redraw();
         }
     }
     if (singleton->down){
-        singleton->ypos -=0.05;
+        singleton->ypos -=0.01;
         if(singleton->withinBounds(singleton->xpos, singleton->ypos) && !singleton->touchWalls(singleton->xpos, singleton->ypos)) {
             singleton->projectile->setY(singleton->ypos);
             singleton->redraw();
         }
     }
     if (singleton->right){
-        singleton->xpos +=0.05;
+        singleton->xpos +=0.01;
         if(singleton->withinBounds(singleton->xpos, singleton->ypos) && !singleton->touchWalls(singleton->xpos, singleton->ypos)) {
             singleton->projectile->setX(singleton->xpos);
             singleton->redraw();
