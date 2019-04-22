@@ -21,6 +21,7 @@ public:
 
     float getX() const;
     float getY() const;
+    float getZ() const;
     float getW() const;
     float getH() const;
     
@@ -30,6 +31,7 @@ public:
     
     void setX(float);
     void setY(float);
+    void setZ(float);
     void setW(float);
     void setH(float);
     
@@ -42,6 +44,8 @@ public:
     void draw(Direction dir);
 
     int translate(Direction dir);
+
+    void redrawScene();
 
     ~Mouse();
     

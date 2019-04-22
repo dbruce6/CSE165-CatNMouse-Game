@@ -45,6 +45,10 @@ float Mouse::getY() const {
     return animation[0]->getY();
 }
 
+float Mouse::getZ() const {
+    return z;
+}
+
 float Mouse::getW() const {
     return animation[0]->getW();
 }
@@ -75,6 +79,10 @@ void Mouse::setY(float y) {
     for(int i = 0; i < animation.size(); i++) {
         animation[i]->setY(y);
     }
+}
+
+void Mouse::setZ(float z) {
+    this->z = z;
 }
 
 void Mouse::setW(float w) {
@@ -112,7 +120,7 @@ bool Mouse::contains(float px, float py) const {
 }
 
 void Mouse::draw(Direction dir) {
-    animation[translate(dir)]->draw();
+    animation[translate(dir)]->draw(z);
 }
 
 int Mouse::translate(Direction dir) {
@@ -129,4 +137,8 @@ int Mouse::translate(Direction dir) {
             cout << "ERROR WRONG DIRECTION TYPE!" << endl;
             return -1;
     }
+}
+
+void Mouse::redrawScene(){
+    glutPostRedisplay();
 }

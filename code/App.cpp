@@ -68,19 +68,21 @@ App::App(int argc, char** argv, int width, int height, const char* title): GlutA
     // map/1.txt and so on will contain the map/layout of the level
     // Using: 0 for empty space, 1 starting loc, 2 for ending loc, 3 for CAT, 4 for obstacles
     // First line of textfile is the number of row followed by number of columns
-    int m, lvl;
-    ifstream infile("maps/0.txt");
-    infile >> m;
-    infile.close();
-    // if(m == 1) { cout << ""}
-    cout << "Choose from level 1 to " << m  << ": (Enter ints)"<< endl;
-    while(!(cin >> lvl) || lvl < 1 || lvl > m) {
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "Integer only. Try Again: ";
-    }
-    cout << "You chose level " << lvl << "!" << endl;
-    layout(lvl);
+    // int m, lvl;
+    // ifstream infile("maps/0.txt");
+    // infile >> m;
+    // infile.close();
+    // // if(m == 1) { cout << ""}
+    // cout << "Choose from level 1 to " << m  << ": (Enter ints)"<< endl;
+    // while(!(cin >> lvl) || lvl < 1 || lvl > m) {
+    //     cin.clear();
+    //     cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    //     cout << "Integer only. Try Again: ";
+    // }
+    // cout << "You chose level " << lvl << "!" << endl;
+    // layout(lvl);
+    layout(1);
+    dir = Right;
 
     // mushroom = new TexRect("mushroom.png", -0.25, 0.9, 0.5, 0.5);
     // projectile = new Rect(-0.05, -0.8, 0.1, 0.1);
@@ -215,18 +217,22 @@ void App::keyUp(unsigned char key, float x, float y) {
     // std::cout <<"testing regular up" << std::endl;
     if(key == 'w') {
         // std::cout << "Done going up!" << std::endl;
+        dir = Up;
         up = false;
     }
     if(key == 'a') {
         // std::cout << "Done going left!" << std::endl;
+        dir = Left;
         left = false;
     }
     if(key == 's') {
         // std::cout << "Done going down!" << std::endl;
+        dir = Down;
         down = false;
     }
     if(key == 'd') {
         // std::cout << "Done going right!" << std::endl;
+        dir = Right;
         right = false;
     }
 }
@@ -238,18 +244,22 @@ void App::keyDown(unsigned char key, float x, float y){
     }
     if(key == 'w') {
         // std::cout << "Going up!" << std::endl;
+        dir = Up;
         up = true;
     }
     if(key == 'a') {
         // std::cout << "Going left!" << std::endl;
+        dir = Left;
         left = true;
     }
     if(key == 's') {
         // std::cout << "Going down!" << std::endl;
+        dir = Down;
         down = true;
     }
     if(key == 'd') {
         // std::cout << "Going right!" << std::endl;
+        dir = Up;
         right = true;
     }
 }
@@ -278,18 +288,22 @@ void App::specialKeyDown(int key, float x, float y){
     // std::cout <<"Special Down called" << std::endl;
     if(key == 101) {
         // std::cout << "Going up!" << std::endl;
+        dir = Up;
         up = true;
     }
     if(key == 100) {
         // std::cout << "Going left!" << std::endl;
+        dir = Left;
         left = true;
     }
     if(key == 103) {
         // std::cout << "Going down!" << std::endl;
+        dir = Down;
         down = true;
     }
     if(key == 102) {
         // std::cout << "Going right!" << std::endl;
+        dir = Right;
         right = true;
     }
 }
