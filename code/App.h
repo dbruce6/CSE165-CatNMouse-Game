@@ -6,10 +6,14 @@
 #include "TexRect.h"
 // #include "Block.h"
 #include "Layout.h"
+#include "Mouse.h"
 #include "vector"
 
 
 class App: public GlutApp {
+enum Direction { Left, Up, Right, Down};  //0, 1, 2, 3
+
+Direction dir;
 float mapWidth, mapHeight, mapHalfWidth, mapHalfHeight;
 
 // std::vector<Block*> grid;
