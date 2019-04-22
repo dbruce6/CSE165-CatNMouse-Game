@@ -49,6 +49,13 @@ void timer(int id){
             // singleton->explosion->playOnce();
             singleton->redraw();
     }
+
+    for(int i = 0; i < singleton->obstacle.size(); i++) {
+        if(singleton->obstacle[i]->contains(singleton->xpos, singleton->ypos)) {
+            // GAME OVER
+        }
+    }
+    
     
     glutTimerFunc(16, timer, id);
 }
