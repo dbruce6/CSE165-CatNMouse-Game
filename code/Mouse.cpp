@@ -14,7 +14,7 @@ using namespace std;
 
 Mouse::Mouse(float x, float y, float z, float w, float h, float r, float g, float b): z(z) {
     for(int i = 0; i < 4; i++) {
-        string filename = "sprites/" + to_string(i) + ".png";
+        string filename = "images/mouse/" + to_string(i) + ".png";
         cout << "filename:\t" << filename << endl;
         animation.push_back(new AnimatedRect(filename.c_str(), 2, 2, 50, true, true, x, y, w, h));
         animation[i]->setR(r);
@@ -23,7 +23,7 @@ Mouse::Mouse(float x, float y, float z, float w, float h, float r, float g, floa
     }
 }
 
-Mouse::Mouse(float x, float y, float z, float w, float h): z(z) {
+Mouse::Mouse(float x, float y, float w, float h): z(0.5f) {
     for(int i = 0; i < 4; i++) {
         string filename = "sprites/" + to_string(i) + ".png";
         cout << "filename:\t" << filename << endl;
@@ -119,25 +119,29 @@ bool Mouse::contains(float px, float py) const {
     return animation[0]->contains(px, py);
 }
 
-void Mouse::draw(Direction dir) {
-    animation[translate(dir)]->draw(z);
+void Mouse::draw(int dir) {
+    animation[dir]->draw(z);
 }
 
-int Mouse::translate(Direction dir) {
-    switch (dir) {
-        case Left:
-            return 0;
-        case Up:
-            return 1;
-        case Right:
-            return 2;
-        case Down:
-            return 3;
-        default:
-            cout << "ERROR WRONG DIRECTION TYPE!" << endl;
-            return -1;
-    }
-}
+// void Mouse::draw(Direction dir) {
+//     animation[translate(dir)]->draw(z);
+// }
+
+// int Mouse::translate(Direction dir) {
+//     switch (dir) {
+//         case Left:
+//             return 0;
+//         case Up:
+//             return 1;
+//         case Right:
+//             return 2;
+//         case Down:
+//             return 3;
+//         default:
+//             cout << "ERROR WRONG DIRECTION TYPE!" << endl;
+//             return -1;
+//     }
+// }
 
 void Mouse::redrawScene(){
     glutPostRedisplay();

@@ -11,9 +11,9 @@
 
 
 class App: public GlutApp {
-enum Direction { Left, Up, Right, Down};  //0, 1, 2, 3
+// enum Direction { Left, Up, Right, Down};  //0, 1, 2, 3
 
-Direction dir;
+int dir;
 float mapWidth, mapHeight, mapHalfWidth, mapHalfHeight;
 
 // std::vector<Block*> grid;
@@ -22,6 +22,7 @@ std::vector<Rect*> map;
 TexRect* mushroom;
 Rect* projectile;
 AnimatedRect* explosion;
+Mouse* mouse;
 float xpos, ypos, speed;
 
 bool up, down, left, right;

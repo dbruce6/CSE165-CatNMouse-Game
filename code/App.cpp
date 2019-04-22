@@ -82,7 +82,8 @@ App::App(int argc, char** argv, int width, int height, const char* title): GlutA
     // cout << "You chose level " << lvl << "!" << endl;
     // layout(lvl);
     layout(1);
-    dir = Right;
+    // dir = Right;
+    dir = 2;
 
     // mushroom = new TexRect("mushroom.png", -0.25, 0.9, 0.5, 0.5);
     // projectile = new Rect(-0.05, -0.8, 0.1, 0.1);
@@ -144,6 +145,8 @@ void App::layout(int i) {
                             projectile->setR(1.0);
                             projectile->setG(0.0);
                             projectile->setB(0.0);
+                            mouse = new Mouse(x, y, 1.0f, 0.1f, 0.1f);
+                            cout << "testing" << endl;
                             break;
                         }
                 case 2: {   // Goal: 
@@ -208,6 +211,7 @@ void App::draw() {
         mushroom->draw(0.1);
     }
     projectile->draw();
+    mouse->draw(dir);
     for(int i = 0; i < map.size(); i++) {
         map[i]->draw();
     }
@@ -217,22 +221,22 @@ void App::keyUp(unsigned char key, float x, float y) {
     // std::cout <<"testing regular up" << std::endl;
     if(key == 'w') {
         // std::cout << "Done going up!" << std::endl;
-        dir = Up;
+        // dir = 1;
         up = false;
     }
     if(key == 'a') {
         // std::cout << "Done going left!" << std::endl;
-        dir = Left;
+        // dir = 0;
         left = false;
     }
     if(key == 's') {
         // std::cout << "Done going down!" << std::endl;
-        dir = Down;
+        // dir = 3;
         down = false;
     }
     if(key == 'd') {
         // std::cout << "Done going right!" << std::endl;
-        dir = Right;
+        // dir = 2;
         right = false;
     }
 }
@@ -244,22 +248,22 @@ void App::keyDown(unsigned char key, float x, float y){
     }
     if(key == 'w') {
         // std::cout << "Going up!" << std::endl;
-        dir = Up;
+        dir = 1;
         up = true;
     }
     if(key == 'a') {
         // std::cout << "Going left!" << std::endl;
-        dir = Left;
+        dir = 0;
         left = true;
     }
     if(key == 's') {
         // std::cout << "Going down!" << std::endl;
-        dir = Down;
+        dir = 3;
         down = true;
     }
     if(key == 'd') {
         // std::cout << "Going right!" << std::endl;
-        dir = Up;
+        dir = 2;
         right = true;
     }
 }
@@ -288,22 +292,22 @@ void App::specialKeyDown(int key, float x, float y){
     // std::cout <<"Special Down called" << std::endl;
     if(key == 101) {
         // std::cout << "Going up!" << std::endl;
-        dir = Up;
+        dir = 1;
         up = true;
     }
     if(key == 100) {
         // std::cout << "Going left!" << std::endl;
-        dir = Left;
+        dir = 0;
         left = true;
     }
     if(key == 103) {
         // std::cout << "Going down!" << std::endl;
-        dir = Down;
+        dir = 3;
         down = true;
     }
     if(key == 102) {
         // std::cout << "Going right!" << std::endl;
-        dir = Right;
+        dir = 2;
         right = true;
     }
 }
