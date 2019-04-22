@@ -21,8 +21,8 @@ void timer(int id){
     // If you want to manipulate the app in here
     // do it through the singleton pointer
 
-    singleton->ypos = singleton->projectile->getY();
-    singleton->xpos = singleton->projectile->getX();
+    singleton->ypos = singleton->mouse->getY();
+    singleton->xpos = singleton->mouse->getX();
 
     if (singleton->up){
         singleton->ypos +=singleton->speed;
@@ -38,8 +38,8 @@ void timer(int id){
     }
 
     if(singleton->withinBounds(singleton->xpos, singleton->ypos) && !singleton->touchWalls(singleton->xpos, singleton->ypos)) {
-            singleton->projectile->setX(singleton->xpos);
-            singleton->projectile->setY(singleton->ypos);
+            singleton->mouse->setX(singleton->xpos);
+            singleton->mouse->setY(singleton->ypos);
             singleton->redraw();
     }
     
@@ -129,7 +129,7 @@ void App::layout(int i) {
 
     // map/0.txt containsthe number of maps available besides itself
     // map/1.txt and so on will contain the map/layout of the level
-    // Using: 0 for empty space, 1 starting loc, 2 for ending loc, 3 for CAT, 4 for obstacles
+    // Using: 0 for empty space, 1 starting loc, 2 for ending loc, 3 for CAT, 4 for wall, 5 for poison
     // First line of textfile is the number of row followed by number of columns
     for(int i = 0; i < r; i++) {    // rows
         for(int j = 0; j < c; j++) {    // columns
@@ -141,16 +141,17 @@ void App::layout(int i) {
             cout << temp << " ";
             switch (temp) {
                 case 1: {   // Starting the mouse: 
-                            projectile = new Rect(x, y, 0.1, 0.1);
-                            projectile->setR(1.0);
-                            projectile->setG(0.0);
-                            projectile->setB(0.0);
+                            // projectile = new Rect(x, y, 0.1, 0.1);
+                            // projectile->setR(0.0);
+                            // projectile->setG(0.0);
+                            // projectile->setB(0.0);
                             mouse = new Mouse(x, y, 1.0f, 0.1f, 0.1f);
                             cout << "testing" << endl;
+                            cout << "Color RGB:\t" << mouse->getR() << ", " << mouse->getG() << ", " << mouse->getB() << endl;
                             break;
                         }
                 case 2: {   // Goal: 
-                            mushroom = new TexRect("mushroom.png", x, y, blockWidth, blockHeight);
+                            mushroom = new TexRect("images/cheese/0.png", x, y, blockWidth, blockHeight);
                             // (const char* map_filename, int rows, int cols, int rate, bool visible=false, bool animated=false, float x=0, float y=0, float w=0.5, float h=0.5)
                             explosion = new AnimatedRect("fireball.bmp", 6, 6, 50, true, true, x, y, blockWidth, blockHeight);
                             // explode = false;
@@ -165,8 +166,8 @@ void App::layout(int i) {
                             map.push_back(new Rect(x, y, blockWidth, blockHeight));     //White walls
                             break;
                         }
-                case 5: {   // Poison? Some sort of obstacles that kills the mouse when touched!
-                            // TODO
+                case 5: {   // Poison
+                            obstacle.push_back(new TexRect("images/poison/0.png", x, y, blockWidth, blockHeight));
                             break;
                         }
                 default: 
@@ -176,6 +177,7 @@ void App::layout(int i) {
         }
         cout << endl;
     }
+    cout << "Done printing" << endl;
 }
 
 bool App::touchWalls(float mx, float my) {
@@ -183,9 +185,9 @@ bool App::touchWalls(float mx, float my) {
     for(int i = 0; i < map.size(); i++) {
         // Checking all 4 corners:
         if( map[i]->contains(mx+speed, my) ||
-            map[i]->contains(mx+projectile->getW(), my) ||
-            map[i]->contains(mx+projectile->getW(), my-projectile->getH()+speed ) ||
-            map[i]->contains(mx+speed, my-projectile->getH()+speed ) ) {
+            map[i]->contains(mx+mouse->getW(), my) ||
+            map[i]->contains(mx+mouse->getW(), my-mouse->getH()+speed ) ||
+            map[i]->contains(mx+speed, my-mouse->getH()+speed ) ) {
             return true;
         }
     }
@@ -197,23 +199,22 @@ bool App::withinBounds(float mx, float my) {
     // if(mx > mapHalfWidth) cout << "testing"<< endl;
     // cout << "my\t" << my << ", H:\t" << projectile->getH() << endl;
     // cout << "Lower-Height:\t" << my-projectile->getH() << endl;
-    return (mx >= -mapHalfWidth && mx+projectile->getW() <= mapHalfWidth && my-projectile->getH()+speed >= -mapHalfHeight && my <= mapHalfHeight);
+    return (mx >= -mapHalfWidth && mx+mouse->getW() <= mapHalfWidth && my-mouse->getH()+speed >= -mapHalfHeight && my <= mapHalfHeight);
 }
 
 void App::draw() {
-    // std::cout << "drawing" << std::endl;
-    // for(int i = 0; i < grid.size(); i++) {
-    //     grid[i]->draw();
-    // }
     if(explode) {
         explosion->draw(0.2);
     } else {
         mushroom->draw(0.1);
     }
-    projectile->draw();
+    // projectile->draw();
     mouse->draw(dir);
     for(int i = 0; i < map.size(); i++) {
         map[i]->draw();
+    }
+    for(int i = 0; i < obstacle.size(); i++) {
+        obstacle[i]->draw(0.5f);
     }
 }
 

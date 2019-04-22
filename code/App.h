@@ -18,9 +18,10 @@ float mapWidth, mapHeight, mapHalfWidth, mapHalfHeight;
 
 // std::vector<Block*> grid;
 std::vector<Rect*> map;
+std::vector<TexRect*> obstacle;
 
 TexRect* mushroom;
-Rect* projectile;
+// Rect* projectile;
 AnimatedRect* explosion;
 Mouse* mouse;
 float xpos, ypos, speed;
