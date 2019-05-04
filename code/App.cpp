@@ -69,7 +69,7 @@ App::App(int argc, char** argv, int width, int height, const char* title): GlutA
     mapHalfHeight = mapHeight/2.0;
     // cout << mapHalfWidth << ", " << mapHalfHeight<<endl;
 
-    speed = 0.05;
+    speed = 0.01;
     
     // map/0.txt containsthe number of maps available besides itself
     // map/1.txt and so on will contain the map/layout of the level
