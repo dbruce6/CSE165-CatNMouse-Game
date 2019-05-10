@@ -101,14 +101,89 @@ void Game::draw() const {
 }
 
 void Game::handleKeyDown(unsigned char key, float x, float y){
-    if (key == ' '){
-        up = true;
-    }
-    else if (key == 'p'){
+    // if (key == ' '){
+    //     up = true;
+    // }
+    if (key == 'p'){
         stop();
     }
     else if (key == 'r'){
         start();
+    }
+    else if(key == 'w') {
+        // std::cout << "Going up!" << std::endl;
+        up = true;
+    }
+    else if(key == 'a') {
+        // std::cout << "Going left!" << std::endl;
+        left = true;
+    }
+    else if(key == 's') {
+        // std::cout << "Going down!" << std::endl;
+        down = true;
+    }
+    else if(key == 'd') {
+        // std::cout << "Going right!" << std::endl;
+        right = true;
+    }
+}
+
+void Game::handleKeyUp(unsigned char key, float x, float y){
+    if(key == 'w') {
+        // std::cout << "Going up!" << std::endl;
+        up = false;
+    }
+    else if(key == 'a') {
+        // std::cout << "Going left!" << std::endl;
+        left = false;
+    }
+    else if(key == 's') {
+        // std::cout << "Going down!" << std::endl;
+        down = false;
+    }
+    else if(key == 'd') {
+        // std::cout << "Going right!" << std::endl;
+        right = false;
+    }
+}
+
+void Game::specialKeyDown(int key, float x, float y){
+    // std::cout <<"Special Down called" << std::endl;
+    if(key == 101) {
+        // std::cout << "Going up!" << std::endl;
+        up = true;
+    }
+    if(key == 100) {
+        // std::cout << "Going left!" << std::endl;
+        left = true;
+    }
+    if(key == 103) {
+        // std::cout << "Going down!" << std::endl;
+        down = true;
+    }
+    if(key == 102) {
+        // std::cout << "Going right!" << std::endl;
+        right = true;
+    }
+}
+
+void Game::specialKeyUp(int key, float x, float y){
+    // std::cout <<"Special Down called" << std::endl;
+    if(key == 101) {
+        // std::cout << "Going up!" << std::endl;
+        up = false;
+    }
+    if(key == 100) {
+        // std::cout << "Going left!" << std::endl;
+        left = false;
+    }
+    if(key == 103) {
+        // std::cout << "Going down!" << std::endl;
+        down = false;
+    }
+    if(key == 102) {
+        // std::cout << "Going right!" << std::endl;
+        right = false;
     }
 }
 
