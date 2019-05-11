@@ -194,7 +194,7 @@ bool App::touchWalls(float mx, float my) {
         if( map[i]->contains(mx+speed, my) ||
             map[i]->contains(mx+mouse->getW(), my) ||
             map[i]->contains(mx+mouse->getW(), my-mouse->getH()+speed ) ||
-            map[i]->contains(mx+speed, my-mouse->getH()+speed ) ) {
+            map[i]->contains(mx+speed, my-mouse->getH()) ) {
             return true;
         }
     }
