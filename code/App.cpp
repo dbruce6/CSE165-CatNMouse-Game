@@ -122,7 +122,7 @@ App::App(int argc, char** argv, int width, int height, const char* title): GlutA
     timer(1);
 }
 
-void App::layout(int i) {
+void App::createMap(int i) {
     string filename = "maps/" + to_string(i) + ".txt";
     cout << "filename:\t" << filename << endl;
     ifstream infile(filename);
