@@ -239,7 +239,7 @@ void App::createMap(int i) {
                         }
                 case 4: {   // Walls that form the layout of the level: 
                             // cout << "block" << endl;
-                            map.push_back(new Rect(x, y, blockWidth, blockHeight));     //White walls
+                            map.push_back(new TexRect("images/wall/wall.png", x, y, blockWidth, blockHeight));     //White walls
                             break;
                         }
                 case 5: {   // Poison
@@ -297,6 +297,15 @@ void App::draw() {
         for(int i = 0; i < obstacle.size(); i++) {
             obstacle[i]->draw(0.5f);
         }
+        mushroom->draw(0.1);
+    }
+    // projectile->draw();
+    mouse->draw(dir);
+    for(int i = 0; i < map.size(); i++) {
+        map[i]->draw(.1f);
+    }
+    for(int i = 0; i < obstacle.size(); i++) {
+        obstacle[i]->draw(0.5f);
     }
 }
 
