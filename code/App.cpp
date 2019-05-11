@@ -88,7 +88,7 @@ App::App(int argc, char** argv, int width, int height, const char* title): GlutA
     // }
     // cout << "You chose level " << lvl << "!" << endl;
     // layout(lvl);
-    layout(1);
+    createMap(1);
     // dir = Right;
     dir = 2;
 
@@ -152,7 +152,7 @@ void App::createMap(int i) {
                             // projectile->setR(0.0);
                             // projectile->setG(0.0);
                             // projectile->setB(0.0);
-                            mouse = new Mouse(x, y, 1.0f, 0.1f, 0.1f);
+                            mouse = new Animal(x, y, 1.0f, 0.1f, 0.1f);
                             cout << "testing" << endl;
                             cout << "Color RGB:\t" << mouse->getR() << ", " << mouse->getG() << ", " << mouse->getB() << endl;
                             break;

@@ -6,7 +6,7 @@
 #include "TexRect.h"
 // #include "Block.h"
 #include "Layout.h"
-#include "Mouse.h"
+#include "Animal.h"
 #include "vector"
 
 
@@ -23,7 +23,7 @@ std::vector<TexRect*> obstacle;
 TexRect* mushroom;
 // Rect* projectile;
 AnimatedRect* explosion;
-Mouse* mouse;
+Animal* mouse;
 float xpos, ypos, speed;
 
 bool up, down, left, right;
