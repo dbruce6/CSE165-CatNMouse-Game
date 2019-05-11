@@ -77,6 +77,10 @@ void Rect::draw() const {
     glEnd();
 }
 
+void Rect::draw(float i) const {
+    draw();
+}
+
 
 void Rect::redrawScene(){
     glutPostRedisplay();
