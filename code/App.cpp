@@ -68,58 +68,127 @@ App::App(int argc, char** argv, int width, int height, const char* title): GlutA
     mapHalfWidth = mapWidth/2.0;
     mapHalfHeight = mapHeight/2.0;
     // cout << mapHalfWidth << ", " << mapHalfHeight<<endl;
-
-    speed = 0.01;
     
-    // map/0.txt containsthe number of maps available besides itself
-    // map/1.txt and so on will contain the map/layout of the level
-    // Using: 0 for empty space, 1 starting loc, 2 for ending loc, 3 for CAT, 4 for obstacles
-    // First line of textfile is the number of row followed by number of columns
-    // int m, lvl;
-    // ifstream infile("maps/0.txt");
-    // infile >> m;
-    // infile.close();
-    // // if(m == 1) { cout << ""}
-    // cout << "Choose from level 1 to " << m  << ": (Enter ints)"<< endl;
-    // while(!(cin >> lvl) || lvl < 1 || lvl > m) {
-    //     cin.clear();
-    //     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    //     cout << "Integer only. Try Again: ";
-    // }
-    // cout << "You chose level " << lvl << "!" << endl;
-    // layout(lvl);
-    createMap(1);
-    // dir = Right;
-    dir = 2;
+    cout << "What would you like to do?" << endl;
+    cout << "Run project (0)" << endl;
+    cout << "Create new Map(1)" << endl;
+    int opt;
+    while(!(cin >> opt) || opt < 0 || opt > 1) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Integer only. Try Again: ";
+    }
 
-    // mushroom = new TexRect("mushroom.png", -0.25, 0.9, 0.5, 0.5);
-    // projectile = new Rect(-0.05, -0.8, 0.1, 0.1);
-    // projectile->setR(1.0);
-    // projectile->setG(0.0);
-    // projectile->setB(0.0);
-    up = false;
-    down = false;
-    right = false;
-    left = false;
-    explode = false;
-    //5x5 of blocks for now
-    // float wid = 4/5.0;    //0.8
-    // float hei = 2/5.0;   //0.4
-    // srand( time(NULL) );
-    // grid.push_back(new Block(-2, 1, wid, hei, 1, 0, 0));
-    /*for(int i = 0; i < 5; i++) {
-        for(int j = 0; j < 5; j++) {
-            float red = rand() % 2;
-            float green = rand() % 2;
-            float blue = rand() % 2;
-            // std::cout << "x: " << i*wid-2 << ", y: " << j*-hei+1 << std::endl;
-            grid.push_back(new Block(i*wid - 2, j*-hei + 1, wid, hei, red, green, blue));
+    if(opt == 0) {
+        creatingMap = false;
+
+        speed = 0.01;
+        
+        // map/0.txt containsthe number of maps available besides itself
+        // map/1.txt and so on will contain the map/layout of the level
+        // Using: 0 for empty space, 1 starting loc, 2 for ending loc, 3 for CAT, 4 for obstacles
+        // First line of textfile is the number of row followed by number of columns
+        // int m, lvl;
+        // ifstream infile("maps/0.txt");
+        // infile >> m;
+        // infile.close();
+        // // if(m == 1) { cout << ""}
+        // cout << "Choose from level 1 to " << m  << ": (Enter ints)"<< endl;
+        // while(!(cin >> lvl) || lvl < 1 || lvl > m) {
+        //     cin.clear();
+        //     cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        //     cout << "Integer only. Try Again: ";
+        // }
+        // cout << "You chose level " << lvl << "!" << endl;
+        // layout(lvl);
+
+        createMap(1);
+        // dir = Right;
+        dir = 2;
+
+        // mushroom = new TexRect("mushroom.png", -0.25, 0.9, 0.5, 0.5);
+        // projectile = new Rect(-0.05, -0.8, 0.1, 0.1);
+        // projectile->setR(1.0);
+        // projectile->setG(0.0);
+        // projectile->setB(0.0);
+        up = false;
+        down = false;
+        right = false;
+        left = false;
+        explode = false;
+        //5x5 of blocks for now
+        // float wid = 4/5.0;    //0.8
+        // float hei = 2/5.0;   //0.4
+        // srand( time(NULL) );
+        // grid.push_back(new Block(-2, 1, wid, hei, 1, 0, 0));
+        /*for(int i = 0; i < 5; i++) {
+            for(int j = 0; j < 5; j++) {
+                float red = rand() % 2;
+                float green = rand() % 2;
+                float blue = rand() % 2;
+                // std::cout << "x: " << i*wid-2 << ", y: " << j*-hei+1 << std::endl;
+                grid.push_back(new Block(i*wid - 2, j*-hei + 1, wid, hei, red, green, blue));
+            }
+        }*/
+        singleton = this;
+
+        timer(1);
+    }
+    else if (opt == 1) {
+        creatingMap = true;
+        ifstream infile("maps/0.txt");
+        int num;
+        if(infile>>num) {
+            cout << "Current number of maps: " << num << endl;
         }
-    }*/
+        cout << "Creating map " << num+1 << ":" << endl;
 
-    singleton = this;
+        cout << "How many rows?" << endl;
+        while(!(cin >> row) || row < 1) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Non-Zero Integer only. Try Again: ";
+        }
+        cout << "How many columns?" << endl;
+        while(!(cin >> col) || col < 1) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Non-Zero Integer only. Try Again: ";
+        }
 
-    timer(1);
+        cout << "Map will be " << row << " by " << col << endl;
+        rectHeight = mapHeight / row;
+        rectWidth = mapWidth / col;
+
+        for(int i = 0; i < row; i++) {
+            for(int j = 0; j < col; j++) {
+                float x = -mapHalfWidth+j*rectWidth;
+                float y = mapHalfHeight-i*rectHeight;
+                mapMaking.push_back(new Rect(x, y, rectWidth, rectHeight));
+            }
+        }
+        for(int i = 0; i < row*col; i++) {
+            if(black) {
+                mapMaking[i]->setR(1.0);
+                mapMaking[i]->setG(1.0);
+                mapMaking[i]->setB(1.0);
+            } else {
+                mapMaking[i]->setR(0.0);
+                mapMaking[i]->setG(0.0);
+                mapMaking[i]->setB(0.0);
+            }
+            black = !black;
+        }
+        // cout <<"Done making rects" << endl;
+
+        cout << "Legend: " << endl;
+        cout << "0 is empty space" << endl;
+        cout << "1 is Mouse" << endl;
+        cout << "2 is Cheese" << endl;
+        cout << "3 is Cat" << endl;
+        cout << "4 is Wall" << endl;
+        cout << "5 is Poison" << endl;
+    }
 }
 
 void App::createMap(int i) {
@@ -152,7 +221,7 @@ void App::createMap(int i) {
                             // projectile->setR(0.0);
                             // projectile->setG(0.0);
                             // projectile->setB(0.0);
-                            mouse = new Animal(x, y, 1.0f, 0.1f, 0.1f);
+                            mouse = new Animal("images/mouse/",x, y, 1.0f, 0.1f, 0.1f);
                             cout << "testing" << endl;
                             cout << "Color RGB:\t" << mouse->getR() << ", " << mouse->getG() << ", " << mouse->getB() << endl;
                             break;
@@ -165,7 +234,7 @@ void App::createMap(int i) {
                             break;
                         }
                 case 3: {   // Cat or some patrolling bot here:
-                            // TODO
+                            cat = new Animal("images/cat/",x, y, 1.0f, 0.1f, 0.1f);
                             break;
                         }
                 case 4: {   // Walls that form the layout of the level: 
@@ -210,9 +279,24 @@ bool App::withinBounds(float mx, float my) {
 }
 
 void App::draw() {
-    if(explode) {
-        explosion->draw(0.2);
+    if(creatingMap) {
+        for(int i = 0; i < mapMaking.size(); i++) {
+            mapMaking[i]->draw(0.1);
+        }
     } else {
+        if(explode) {
+            explosion->draw(0.2);
+        } else {
+            mushroom->draw(0.1);
+        }
+        // projectile->draw();
+        mouse->draw(dir);
+        for(int i = 0; i < map.size(); i++) {
+            map[i]->draw();
+        }
+        for(int i = 0; i < obstacle.size(); i++) {
+            obstacle[i]->draw(0.5f);
+        }
         mushroom->draw(0.1);
     }
     // projectile->draw();
@@ -274,6 +358,18 @@ void App::keyDown(unsigned char key, float x, float y){
         dir = 2;
         right = true;
     }
+    if(creatingMap && m1) {
+        // cout << "1 is Mouse" << endl;
+        // cout << "2 is Cheese" << endl;
+        // cout << "3 is Cat" << endl;
+        // cout << "4 is Wall" << endl;
+        // cout << "5 is Poison" << endl;
+        if(key == '1') {
+            cout << "MOUSE" << endl;
+            mapMaking.at(mapCounter) = new TexRect("images/mouse/0.png", x, y, 0.1, 0.1);
+            // mapMaking.at(mapCounter) = new Animal("images/mouse/",x, y, 1.0f, 0.1f, 0.1f);
+        }
+    }
 }
 
 void App::specialKeyUp(int key, float x, float y) {
@@ -318,6 +414,25 @@ void App::specialKeyDown(int key, float x, float y){
         dir = 2;
         right = true;
     }
+}
+
+void App::leftMouseDown(float mx, float my) {
+    m1 = true;
+    m1x = mx;
+    m1y = my;
+    if(creatingMap) {
+        for(int i = 0; i < mapMaking.size(); i++) {
+            if(mapMaking.at(i)->contains(mx, my)) {
+                mapCounter = i;
+                cout << "counter: " << mapCounter << endl;
+                break;
+            }
+        }
+    }
+}
+
+void App::leftMouseUp(float mx, float my) {
+    m1 = false;
 }
 
 App::~App(){
