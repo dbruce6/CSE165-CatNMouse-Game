@@ -14,6 +14,8 @@ class App: public GlutApp {
 // enum Direction { Left, Up, Right, Down};  //0, 1, 2, 3
 
 int dir;
+int levels, current_level;
+int total_score, total_possible;
 float mapWidth, mapHeight, mapHalfWidth, mapHalfHeight;
 
 // std::vector<Block*> grid;
@@ -27,7 +29,7 @@ std::vector<bool> eaten;
 
 TexRect* mushroom;
 // Rect* projectile;
-AnimatedRect* explosion;
+// AnimatedRect* explosion;
 Animal* mouse;
 AnimatedRect* death;
 float xpos, ypos, speed;
@@ -35,7 +37,7 @@ int num_Cheese;
 int score;
 
 bool up, down, left, right;
-bool explode;
+// bool explode;
 bool alive;
     
 public:
@@ -43,6 +45,8 @@ public:
     App(int argc, char** argv, int width, int height, const char* title);
 
     void createMap(int i);
+
+    void nextLevel();
 
     bool touchWalls(float mx, float my);
 

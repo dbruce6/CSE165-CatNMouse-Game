@@ -21,6 +21,11 @@ void timer(int id){
     // If you want to manipulate the app in here
     // do it through the singleton pointer
 
+    // if(singleton->score >= singleton->num_Cheese) {
+    //     cout << "Next Level!" << endl;
+    //     singleton->nextLevel();
+    // }
+
     for(int i = 0; i < singleton->guards.size(); i++) {
         bool cat_in_graphic = singleton->withinBounds(singleton->guards[i]->getX(), singleton->guards[i]->getY() );
         bool cat_not_hitting_walls = !singleton->catTouchWalls(i, singleton->guards[i]->getX(), singleton->guards[i]->getY());
@@ -92,10 +97,21 @@ void timer(int id){
         }
 
          if(singleton->mushroom->contains(singleton->xpos, singleton->ypos)) {  
-                singleton->explode = true;
+                // singleton->explode = true;
                 // singleton->explosion->playOnce();
                 singleton->redraw();
+                // if(singleton->score >= singleton->num_Cheese) {
+                    // cout << "Next Level!" << endl;
+                    singleton->nextLevel();
+                // }
         }
+    }
+
+    if(!singleton->alive) {
+        cout << "You finished with the score of " << singleton->total_score << "/" << singleton->total_possible << " at level " << singleton->current_level << " out of the " << singleton->levels << " levels available!" << endl;
+        cout << "Too Bad! Trying harder next game!" << endl;
+        // How to check if the dying animation is done??? Should only exit after that's done!!!
+        exit(0);
     }
     
     
@@ -117,9 +133,11 @@ App::App(int argc, char** argv, int width, int height, const char* title): GlutA
     // map/1.txt and so on will contain the map/layout of the level
     // Using: 0 for empty space, 1 starting loc, 2 for ending loc, 3 for CAT, 4 for obstacles
     // First line of textfile is the number of row followed by number of columns
-    // int m, lvl;
-    // ifstream infile("maps/0.txt");
-    // infile >> m;
+    ifstream infile("maps/0.txt");
+    infile >> levels;
+    current_level = 1;
+    total_score = 0;
+    total_possible = 0;
     // infile.close();
     // // if(m == 1) { cout << ""}
     // cout << "Choose from level 1 to " << m  << ": (Enter ints)"<< endl;
@@ -130,7 +148,7 @@ App::App(int argc, char** argv, int width, int height, const char* title): GlutA
     // }
     // cout << "You chose level " << lvl << "!" << endl;
     // layout(lvl);
-    createMap(2);
+    createMap(current_level);
     score = 0;
     // dir = Right;
     dir = 2;
@@ -144,7 +162,7 @@ App::App(int argc, char** argv, int width, int height, const char* title): GlutA
     down = false;
     right = false;
     left = false;
-    explode = false;
+    // explode = false;
     alive = true;
     //5x5 of blocks for now
     // float wid = 4/5.0;    //0.8
@@ -168,15 +186,15 @@ App::App(int argc, char** argv, int width, int height, const char* title): GlutA
 
 void App::createMap(int i) {
     string filename = "maps/" + to_string(i) + ".txt";
-    cout << "filename:\t" << filename << endl;
+    // cout << "filename:\t" << filename << endl;
     ifstream infile(filename);
     int r, c;
     if(infile >> r >> c) {
-        cout << "row, col:\t" << r << ", " << c << endl;
+        // cout << "row, col:\t" << r << ", " << c << endl;
     }
     float blockHeight = mapHeight / r;
     float blockWidth = mapWidth / c;
-    cout << "block w/h:\t" << blockWidth << ", " << blockHeight << endl;
+    // cout << "block w/h:\t" << blockWidth << ", " << blockHeight << endl;
 
     // map/0.txt containsthe number of maps available besides itself
     // map/1.txt and so on will contain the map/layout of the level
@@ -189,7 +207,7 @@ void App::createMap(int i) {
             
             int temp;
             infile >> temp;
-            cout << temp << " ";
+            // cout << temp << " ";
             switch (temp) {
                 case 1: {   // Starting the mouse: 
                             // projectile = new Rect(x, y, 0.1, 0.1);
@@ -205,7 +223,8 @@ void App::createMap(int i) {
                 case 2: {   // Goal: 
                             mushroom = new TexRect("images/goal/0.png", x, y, blockWidth, blockHeight);
                             // (const char* map_filename, int rows, int cols, int rate, bool visible=false, bool animated=false, float x=0, float y=0, float w=0.5, float h=0.5)
-                            explosion = new AnimatedRect("fireball.bmp", 6, 6, 50, true, true, x, y, blockWidth, blockHeight);
+                            // explosion = new AnimatedRect("fireball.bmp", 6, 6, 50, true, true, x, y, blockWidth, blockHeight);
+                            // explosion = new AnimatedRect("images/dyinganimation/dyinganimation.png", 4, 4, 50, true, true, x, y, 0.1f, 0.1f);
                             // explode = false;
                             break;
                         }
@@ -227,6 +246,7 @@ void App::createMap(int i) {
                 case 6: {
                             // Cheese!
                             num_Cheese++;
+                            total_possible++;
                             // cout << "Number of Cheese: " << num_Cheese << endl;
                             eaten.push_back(false);
                             cheeses.push_back(new TexRect("images/cheese/0.png", x, y, blockWidth, blockHeight));
@@ -236,9 +256,38 @@ void App::createMap(int i) {
                     break;
             }
         }
-        cout << endl;
+        // cout << endl;
     }
-    cout << "Done printing" << endl;
+    // cout << "Done printing" << endl;
+}
+
+void App::nextLevel() {
+    current_level++;
+    if(current_level > levels) {
+        cout << "Final score:\t" << total_score << "/" << total_possible << endl;
+        if(total_score < total_possible) {
+            cout << "Game Over! Try harder next time!" << endl;
+        } else {
+            cout << "CONGRATULATIONS! YOU WIN!" << endl;
+        }
+        exit(0);
+    } else {
+        cout << "Current score:\t" << total_score << "/" << total_possible << endl;
+
+        // Clear out all the vectors used!
+        map.clear();
+        obstacle.clear();
+        guards.clear();
+        guard_dir.clear();
+        cheeses.clear();
+        eaten.clear();
+
+        // Reset the statistics for the level
+        num_Cheese = 0;
+        score = 0;
+
+        createMap(current_level);
+    }
 }
 
 bool App::touchWalls(float mx, float my) {
@@ -267,6 +316,15 @@ bool App::catTouchWalls(int j, float mx, float my) {
             return true;
         }
     }
+    for(int i = 0; i < obstacle.size(); i++) {
+        // Checking all 4 corners:
+        if( obstacle[i]->contains(mx+speed, my) ||
+            obstacle[i]->contains(mx+guards.at(j)->getW(), my) ||
+            obstacle[i]->contains(mx+guards.at(j)->getW(), my-guards.at(j)->getH()+speed ) ||
+            obstacle[i]->contains(mx+speed, my-guards.at(j)->getH()) ) {
+            return true;
+        }
+    }
     return false;
 }
 
@@ -279,6 +337,7 @@ bool App::touchCheese(float mx, float my) {
             if(!eaten.at(i)) {
                 eaten.at(i) = true;
                 score++;
+                total_score++;
                 return true;
             }
         }
@@ -296,11 +355,12 @@ bool App::withinBounds(float mx, float my) {
 
 void App::draw() {
     // End of Level or level-ending Stuff here:
-    if(explode) {
-        explosion->draw(0.2);
-    } else {
+    // if(explode) {
+    //     explosion->draw(0.2);
+    //     // explosion->playOnce();
+    // } else {
         mushroom->draw(0.1);
-    }
+    // }
 
     // Drawing the moving parts: 
     // projectile->draw();
