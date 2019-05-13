@@ -17,9 +17,8 @@ int dir;
 float mapWidth, mapHeight, mapHalfWidth, mapHalfHeight;
 
 // std::vector<Block*> grid;
-std::vector<TexRect*> map;
+std::vector<Rect*> map;
 std::vector<TexRect*> obstacle;
-
 
 TexRect* mushroom;
 // Rect* projectile;
