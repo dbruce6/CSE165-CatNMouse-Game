@@ -21,9 +21,7 @@ float mapWidth, mapHeight, mapHalfWidth, mapHalfHeight;
 std::vector<Rect*> map;
 std::vector<TexRect*> obstacle;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 // Game editor stuff:
 std::vector<Rect*> mapMaking;
 int mapCounter = 0;
@@ -33,12 +31,7 @@ float rectHeight, rectWidth;
 bool black = true;
 bool m1 = false;
 float m1x, m1y;
-=======
->>>>>>> parent of d42d1f3... full textures for everything
-=======
->>>>>>> parent of d42d1f3... full textures for everything
-=======
->>>>>>> parent of d42d1f3... full textures for everything
+
 TexRect* mushroom;
 // Rect* projectile;
 AnimatedRect* explosion;
