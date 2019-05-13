@@ -21,38 +21,76 @@ void timer(int id){
     // If you want to manipulate the app in here
     // do it through the singleton pointer
 
+    for(int i = 0; i < singleton->guards.size(); i++) {
+        bool cat_in_graphic = singleton->withinBounds(singleton->guards[i]->getX(), singleton->guards[i]->getY() );
+        bool cat_not_hitting_walls = !singleton->catTouchWalls(i, singleton->guards[i]->getX(), singleton->guards[i]->getY());
+        bool catOK = cat_in_graphic && cat_not_hitting_walls;
+        if(!catOK) {
+            // cout << "NOT WITHIN BOUND!!!" << endl;
+            if(singleton->guard_dir[i] == 0) {
+                // cout << "Changing direction to Right" << endl;
+                singleton->guard_dir.at(i) = 2;
+            } else {
+                // cout << "Changing direction to Left" << endl;
+                singleton->guard_dir.at(i) = 0;
+            }
+        }
+
+        if(singleton->guard_dir[i] == 0) {  // Going Left
+            singleton->guards[i]->setX(singleton->guards[i]->getX() - singleton->speed);
+        } else {    // Going Right
+            singleton->guards[i]->setX(singleton->guards[i]->getX() + singleton->speed);
+        }
+    }
+
     singleton->ypos = singleton->mouse->getY();
     singleton->xpos = singleton->mouse->getX();
 
-    if (singleton->up){
-        singleton->ypos +=singleton->speed;
-    }
-    if (singleton->left){
-        singleton->xpos -=singleton->speed;
-    }
-    if (singleton->down){
-        singleton->ypos -=singleton->speed;
-    }
-    if (singleton->right){
-        singleton->xpos +=singleton->speed;
-    }
-
-    if(singleton->withinBounds(singleton->xpos, singleton->ypos) && !singleton->touchWalls(singleton->xpos, singleton->ypos)) {
+    if(singleton->alive) {
+        if (singleton->up){
+            singleton->ypos +=singleton->speed;
+        }
+        if (singleton->left){
+            singleton->xpos -=singleton->speed;
+        }
+        if (singleton->down){
+            singleton->ypos -=singleton->speed;
+        }
+        if (singleton->right){
+            singleton->xpos +=singleton->speed;
+        }
+        
+        if(singleton->withinBounds(singleton->xpos, singleton->ypos) && !singleton->touchWalls(singleton->xpos, singleton->ypos)) {
             singleton->mouse->setX(singleton->xpos);
             singleton->mouse->setY(singleton->ypos);
             singleton->redraw();
-    }
-    
+        }
 
-    if(singleton->mushroom->contains(singleton->xpos, singleton->ypos)) {  
-            singleton->explode = true;
-            // singleton->explosion->playOnce();
-            singleton->redraw();
-    }
+        for(int i = 0; i < singleton->obstacle.size(); i++) {
+            if(singleton->obstacle[i]->contains(singleton->xpos, singleton->ypos)) {
+                // singleton->mouse->setStatus(false);
+                singleton->alive = false;
+                singleton->death->setX(singleton->xpos);
+                singleton->death->setY(singleton->ypos);
+                singleton->death->playOnce();
+                singleton->redraw();
+            }
+        }
 
-    for(int i = 0; i < singleton->obstacle.size(); i++) {
-        if(singleton->obstacle[i]->contains(singleton->xpos, singleton->ypos)) {
-            // GAME OVER
+        for(int i = 0; i < singleton->guards.size(); i++) {
+            if(singleton->guards.at(i)->contains(singleton->xpos, singleton->ypos)) {
+                singleton->alive = false;
+                singleton->death->setX(singleton->xpos);
+                singleton->death->setY(singleton->ypos);
+                singleton->death->playOnce();
+                singleton->redraw();
+            }
+        }
+
+         if(singleton->mushroom->contains(singleton->xpos, singleton->ypos)) {  
+                singleton->explode = true;
+                // singleton->explosion->playOnce();
+                singleton->redraw();
         }
     }
     
@@ -102,6 +140,7 @@ App::App(int argc, char** argv, int width, int height, const char* title): GlutA
     right = false;
     left = false;
     explode = false;
+    alive = true;
     //5x5 of blocks for now
     // float wid = 4/5.0;    //0.8
     // float hei = 2/5.0;   //0.4
@@ -152,9 +191,10 @@ void App::createMap(int i) {
                             // projectile->setR(0.0);
                             // projectile->setG(0.0);
                             // projectile->setB(0.0);
-                            mouse = new Animal(x, y, 1.0f, 0.1f, 0.1f);
+                            mouse = new Animal("images/mouse/", x, y, 1.0f, 0.1f, 0.1f);
                             cout << "testing" << endl;
                             cout << "Color RGB:\t" << mouse->getR() << ", " << mouse->getG() << ", " << mouse->getB() << endl;
+                            death = new AnimatedRect("images/dyinganimation/dyinganimation.png", 4, 4, 75, true, true, x, y, 0.1f, 0.1f);
                             break;
                         }
                 case 2: {   // Goal: 
@@ -165,7 +205,9 @@ void App::createMap(int i) {
                             break;
                         }
                 case 3: {   // Cat or some patrolling bot here:
-                            // TODO
+                            // Cats will patrol left to right
+                            guards.push_back(new Animal("images/cat/", x, y, 1.0f, 0.2f, 0.2f));
+                            guard_dir.push_back(0);
                             break;
                         }
                 case 4: {   // Walls that form the layout of the level: 
@@ -201,6 +243,21 @@ bool App::touchWalls(float mx, float my) {
     return false;
 }
 
+bool App::catTouchWalls(int j, float mx, float my) {
+    // cout << "Checking if touching walls" << endl;
+    for(int i = 0; i < map.size(); i++) {
+        // cout << "Checking" << endl;
+        // Checking all 4 corners:
+        if( map[i]->contains(mx+speed, my) ||
+            map[i]->contains(mx+guards.at(j)->getW(), my) ||
+            map[i]->contains(mx+guards.at(j)->getW(), my-guards.at(j)->getH()+speed ) ||
+            map[i]->contains(mx+speed, my-guards.at(j)->getH()) ) {
+            return true;
+        }
+    }
+    return false;
+}
+
 bool App::withinBounds(float mx, float my) {
     // cout << mx << ", " << my << endl;
     // if(mx > mapHalfWidth) cout << "testing"<< endl;
@@ -210,19 +267,32 @@ bool App::withinBounds(float mx, float my) {
 }
 
 void App::draw() {
+    // End of Level or level-ending Stuff here:
     if(explode) {
         explosion->draw(0.2);
     } else {
         mushroom->draw(0.1);
     }
+
+    // Drawing the moving parts: 
     // projectile->draw();
-    mouse->draw(dir);
+    if(alive) {
+        mouse->draw(dir);
+    } else {
+        death->draw(1.0);
+    }
+
+    // Drawing the map itself and obstacles
     for(int i = 0; i < map.size(); i++) {
-        map[i]->draw(.1f);
+        map[i]->draw(0.1f);
+    }
+    for(int i = 0; i < guards.size(); i++) {
+        guards[i]->draw(guard_dir[i]);
     }
     for(int i = 0; i < obstacle.size(); i++) {
         obstacle[i]->draw(0.5f);
     }
+    // death->draw(0.2);
 }
 
 void App::keyUp(unsigned char key, float x, float y) {

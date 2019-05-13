@@ -12,32 +12,48 @@
 
 using namespace std;
 
-Animal::Animal(float x, float y, float z, float w, float h, float r, float g, float b): z(z) {
+Animal::Animal(string fileLoc, float x, float y, float z, float w, float h, float r, float g, float b): z(z) {
     for(int i = 0; i < 4; i++) {
-        string filename = "images/mouse/" + to_string(i) + ".png";
+        // string filename = "images/mouse/" + to_string(i) + ".png";
+        string filename = fileLoc + to_string(i) + ".png";
         cout << "filename:\t" << filename << endl;
         animation.push_back(new AnimatedRect(filename.c_str(), 2, 2, 100, true, true, x, y, w, h));
         animation[i]->setR(r);
         animation[i]->setG(g);
         animation[i]->setB(b);
     }
+    death = new AnimatedRect("images/dyinganimation/dyinganimation.png", 4, 4, 100, true, true, x, y, w, h);
+    death->setR(r);
+    death->setG(g);
+    death->setB(b);
+    alive = true;
 }
 
-Animal::Animal(float x, float y, float w, float h): z(0.5f) {
+Animal::Animal(string fileLoc, float x, float y, float w, float h): z(0.5f) {
     for(int i = 0; i < 4; i++) {
-        string filename = "sprites/" + to_string(i) + ".png";
+        // string filename = "sprites/" + to_string(i) + ".png";
+        string filename = fileLoc + to_string(i) + ".png";
         cout << "filename:\t" << filename << endl;
         animation.push_back(new AnimatedRect(filename.c_str(), 2, 2, 100, true, true, x, y, w, h));
         animation[i]->setR(1.0f);
         animation[i]->setG(1.0f);
         animation[i]->setB(1.0f);
     }
+    death = new AnimatedRect("images/dyinganimation/dyinganimation.png", 4, 4, 100, true, true, x, y, w, h);
+    death->setR(1.0f);
+    death->setG(1.0f);
+    death->setB(1.0f);
+    alive = true;
 }
 
 Animal::~Animal() {
     for(int i = 0; i < animation.size(); i++) {
         delete animation[i];
     }
+}
+
+void Animal::setStatus(bool a) {
+    this->alive = a;
 }
 
 float Animal::getX() const {
@@ -123,7 +139,13 @@ bool Animal::contains(float px, float py) const {
 }
 
 void Animal::draw(int dir) {
-    animation[dir]->draw(z);
+    if(alive) {
+        animation[dir]->draw(z);
+    } else {
+        death->draw(z);
+        // death->playOnce();
+    }
+    
 }
 
 // void Animal::draw(Direction dir) {

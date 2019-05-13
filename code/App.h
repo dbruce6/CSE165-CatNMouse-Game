@@ -19,16 +19,20 @@ float mapWidth, mapHeight, mapHalfWidth, mapHalfHeight;
 // std::vector<Block*> grid;
 std::vector<TexRect*> map;
 std::vector<TexRect*> obstacle;
+std::vector<Animal*> guards;
+std::vector<int> guard_dir;
 
 
 TexRect* mushroom;
 // Rect* projectile;
 AnimatedRect* explosion;
 Animal* mouse;
+AnimatedRect* death;
 float xpos, ypos, speed;
 
 bool up, down, left, right;
 bool explode;
+bool alive;
     
 public:
     
@@ -37,6 +41,8 @@ public:
     void createMap(int i);
 
     bool touchWalls(float mx, float my);
+
+    bool catTouchWalls(int i, float mx, float my);
 
     bool withinBounds(float mx, float my);
     
