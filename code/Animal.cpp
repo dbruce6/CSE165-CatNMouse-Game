@@ -16,7 +16,7 @@ Animal::Animal(string fileLoc, float x, float y, float z, float w, float h, floa
     for(int i = 0; i < 4; i++) {
         // string filename = "images/mouse/" + to_string(i) + ".png";
         string filename = fileLoc + to_string(i) + ".png";
-        cout << "filename:\t" << filename << endl;
+        // cout << "filename:\t" << filename << endl;
         animation.push_back(new AnimatedRect(filename.c_str(), 2, 2, 100, true, true, x, y, w, h));
         animation[i]->setR(r);
         animation[i]->setG(g);
@@ -33,7 +33,7 @@ Animal::Animal(string fileLoc, float x, float y, float w, float h): z(0.5f) {
     for(int i = 0; i < 4; i++) {
         // string filename = "sprites/" + to_string(i) + ".png";
         string filename = fileLoc + to_string(i) + ".png";
-        cout << "filename:\t" << filename << endl;
+        // cout << "filename:\t" << filename << endl;
         animation.push_back(new AnimatedRect(filename.c_str(), 2, 2, 100, true, true, x, y, w, h));
         animation[i]->setR(1.0f);
         animation[i]->setG(1.0f);

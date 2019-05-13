@@ -66,6 +66,10 @@ void timer(int id){
             singleton->redraw();
         }
 
+        if(singleton->touchCheese(singleton->xpos, singleton->ypos)) {
+            cout << "Score:\t" << singleton->score << "/" << singleton->num_Cheese << endl;
+        }
+
         for(int i = 0; i < singleton->obstacle.size(); i++) {
             if(singleton->obstacle[i]->contains(singleton->xpos, singleton->ypos)) {
                 // singleton->mouse->setStatus(false);
@@ -126,7 +130,8 @@ App::App(int argc, char** argv, int width, int height, const char* title): GlutA
     // }
     // cout << "You chose level " << lvl << "!" << endl;
     // layout(lvl);
-    createMap(1);
+    createMap(2);
+    score = 0;
     // dir = Right;
     dir = 2;
 
@@ -192,13 +197,13 @@ void App::createMap(int i) {
                             // projectile->setG(0.0);
                             // projectile->setB(0.0);
                             mouse = new Animal("images/mouse/", x, y, 1.0f, 0.1f, 0.1f);
-                            cout << "testing" << endl;
-                            cout << "Color RGB:\t" << mouse->getR() << ", " << mouse->getG() << ", " << mouse->getB() << endl;
+                            // cout << "testing" << endl;
+                            // cout << "Color RGB:\t" << mouse->getR() << ", " << mouse->getG() << ", " << mouse->getB() << endl;
                             death = new AnimatedRect("images/dyinganimation/dyinganimation.png", 4, 4, 75, true, true, x, y, 0.1f, 0.1f);
                             break;
                         }
                 case 2: {   // Goal: 
-                            mushroom = new TexRect("images/cheese/0.png", x, y, blockWidth, blockHeight);
+                            mushroom = new TexRect("images/goal/0.png", x, y, blockWidth, blockHeight);
                             // (const char* map_filename, int rows, int cols, int rate, bool visible=false, bool animated=false, float x=0, float y=0, float w=0.5, float h=0.5)
                             explosion = new AnimatedRect("fireball.bmp", 6, 6, 50, true, true, x, y, blockWidth, blockHeight);
                             // explode = false;
@@ -218,6 +223,13 @@ void App::createMap(int i) {
                 case 5: {   // Poison
                             obstacle.push_back(new TexRect("images/poison/0.png", x, y, blockWidth, blockHeight));
                             break;
+                        }
+                case 6: {
+                            // Cheese!
+                            num_Cheese++;
+                            // cout << "Number of Cheese: " << num_Cheese << endl;
+                            eaten.push_back(false);
+                            cheeses.push_back(new TexRect("images/cheese/0.png", x, y, blockWidth, blockHeight));
                         }
                 default: 
                     // cout <<"Error " << temp << endl;
@@ -258,6 +270,22 @@ bool App::catTouchWalls(int j, float mx, float my) {
     return false;
 }
 
+bool App::touchCheese(float mx, float my) {
+    for(int i = 0; i < cheeses.size(); i++) {
+        if( cheeses[i]->contains(mx+speed, my) ||
+            cheeses[i]->contains(mx+mouse->getW(), my) ||
+            cheeses[i]->contains(mx+mouse->getW(), my-mouse->getH()+speed ) ||
+            cheeses[i]->contains(mx+speed, my-mouse->getH()) ) {
+            if(!eaten.at(i)) {
+                eaten.at(i) = true;
+                score++;
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 bool App::withinBounds(float mx, float my) {
     // cout << mx << ", " << my << endl;
     // if(mx > mapHalfWidth) cout << "testing"<< endl;
@@ -291,6 +319,11 @@ void App::draw() {
     }
     for(int i = 0; i < obstacle.size(); i++) {
         obstacle[i]->draw(0.5f);
+    }
+    for(int i = 0; i < cheeses.size(); i++) {
+        if(!eaten.at(i)) {
+            cheeses.at(i)->draw(0.5f);
+        }
     }
     // death->draw(0.2);
 }

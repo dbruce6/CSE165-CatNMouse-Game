@@ -21,6 +21,8 @@ std::vector<TexRect*> map;
 std::vector<TexRect*> obstacle;
 std::vector<Animal*> guards;
 std::vector<int> guard_dir;
+std::vector<TexRect*> cheeses;
+std::vector<bool> eaten;
 
 
 TexRect* mushroom;
@@ -29,6 +31,8 @@ AnimatedRect* explosion;
 Animal* mouse;
 AnimatedRect* death;
 float xpos, ypos, speed;
+int num_Cheese;
+int score;
 
 bool up, down, left, right;
 bool explode;
@@ -43,6 +47,8 @@ public:
     bool touchWalls(float mx, float my);
 
     bool catTouchWalls(int i, float mx, float my);
+
+    bool touchCheese(float mx, float my);
 
     bool withinBounds(float mx, float my);
     
