@@ -259,8 +259,8 @@ void App::createMap(int i) {
         // cout << endl;
     }
     gameOver = new TextBox("GAME OVER!", -0.25, 0, GLUT_BITMAP_HELVETICA_18, 1.0, 0.0, 0.0, 500);
-    string temp = "You finished with the score of " + total_score + " out of " + total_possible + " at level " + current_level + " out of the " + levels + " levels available!";
-    DisplayScore = new TextBox("");
+    string temp = "You finished with the score of " + to_string(total_score) + " out of " + to_string(total_possible) + " at level " + to_string(current_level) + " out of the " + to_string(levels) + " levels available!";
+    DisplayScore = new TextBox(temp.c_str(), -1.0, -0.2, GLUT_BITMAP_HELVETICA_18, 1.0, 1.0, 1.0, 200);
     // cout << "Done printing" << endl;
 }
 
