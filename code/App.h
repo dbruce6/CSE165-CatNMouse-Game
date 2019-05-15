@@ -4,6 +4,7 @@
 #include "GlutApp.h"
 #include "AnimatedRect.h"
 #include "TexRect.h"
+#include "TextBox.h"
 // #include "Block.h"
 #include "Layout.h"
 #include "Animal.h"
@@ -28,6 +29,8 @@ std::vector<bool> eaten;
 
 
 TexRect* mushroom;
+TextBox* gameOver;
+TextBox* DisplayScore;
 // Rect* projectile;
 // AnimatedRect* explosion;
 Animal* mouse;

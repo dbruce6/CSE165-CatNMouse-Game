@@ -108,8 +108,8 @@ void timer(int id){
     }
 
     if(!singleton->alive) {
-        cout << "You finished with the score of " << singleton->total_score << "/" << singleton->total_possible << " at level " << singleton->current_level << " out of the " << singleton->levels << " levels available!" << endl;
-        cout << "Too Bad! Trying harder next game!" << endl;
+        // cout << "You finished with the score of " << singleton->total_score << "/" << singleton->total_possible << " at level " << singleton->current_level << " out of the " << singleton->levels << " levels available!" << endl;
+        // cout << "Too Bad! Trying harder next game!" << endl;
         // How to check if the dying animation is done??? Should only exit after that's done!!!
         // exit(0);
     }
@@ -258,6 +258,9 @@ void App::createMap(int i) {
         }
         // cout << endl;
     }
+    gameOver = new TextBox("GAME OVER!", -0.25, 0, GLUT_BITMAP_HELVETICA_18, 1.0, 0.0, 0.0, 500);
+    string temp = "You finished with the score of " + total_score + " out of " + total_possible + " at level " + current_level + " out of the " + levels + " levels available!";
+    DisplayScore = new TextBox("");
     // cout << "Done printing" << endl;
 }
 
@@ -266,9 +269,9 @@ void App::nextLevel() {
     if(current_level > levels) {
         cout << "Final score:\t" << total_score << "/" << total_possible << endl;
         if(total_score < total_possible) {
-            cout << "Game Over! Try harder next time!" << endl;
+            // cout << "Game Over! Try harder next time!" << endl;
         } else {
-            cout << "CONGRATULATIONS! YOU WIN!" << endl;
+            // cout << "CONGRATULATIONS! YOU WIN!" << endl;
         }
         // exit(0);
     } else {
@@ -359,31 +362,31 @@ void App::draw() {
     //     explosion->draw(0.2);
     //     // explosion->playOnce();
     // } else {
-        mushroom->draw(0.1);
     // }
 
     // Drawing the moving parts: 
     // projectile->draw();
     if(alive) {
         mouse->draw(dir);
+        mushroom->draw(0.1);
+        // Drawing the map itself and obstacles
+        for(int i = 0; i < map.size(); i++) {
+            map[i]->draw(0.1f);
+        }
+        for(int i = 0; i < guards.size(); i++) {
+            guards[i]->draw(guard_dir[i]);
+        }
+        for(int i = 0; i < obstacle.size(); i++) {
+            obstacle[i]->draw(0.5f);
+        }
+        for(int i = 0; i < cheeses.size(); i++) {
+            if(!eaten.at(i)) {
+                cheeses.at(i)->draw(0.5f);
+            }
+        }
     } else {
         death->draw(1.0);
-    }
-
-    // Drawing the map itself and obstacles
-    for(int i = 0; i < map.size(); i++) {
-        map[i]->draw(0.1f);
-    }
-    for(int i = 0; i < guards.size(); i++) {
-        guards[i]->draw(guard_dir[i]);
-    }
-    for(int i = 0; i < obstacle.size(); i++) {
-        obstacle[i]->draw(0.5f);
-    }
-    for(int i = 0; i < cheeses.size(); i++) {
-        if(!eaten.at(i)) {
-            cheeses.at(i)->draw(0.5f);
-        }
+        gameOver->draw();
     }
     // death->draw(0.2);
 }
