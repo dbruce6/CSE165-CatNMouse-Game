@@ -296,19 +296,22 @@ void App::nextLevel() {
 
 void App::reset() {
     // Clear out all the vectors used!
-        map.clear();
-        obstacle.clear();
-        guards.clear();
-        guard_dir.clear();
-        cheeses.clear();
-        eaten.clear();
+    map.clear();
+    obstacle.clear();
+    guards.clear();
+    guard_dir.clear();
+    cheeses.clear();
+    eaten.clear();
 
-        // Reset the statistics for the level
-        num_Cheese = 0;
-        score = 0;
-        current_level = 1;
+    // Reset the statistics for the level
+    num_Cheese = 0;
+    score = 0;
+    current_level = 1;
+    total_score = 0;
+    total_possible = 0;
+    alive = true;
 
-        createMap(current_level);
+    createMap(current_level);
 }
 
 bool App::touchWalls(float mx, float my) {
@@ -434,6 +437,9 @@ void App::keyUp(unsigned char key, float x, float y) {
         // std::cout << "Done going right!" << std::endl;
         // dir = 2;
         right = false;
+    }
+    if(key == 'r' && !alive) {
+        reset();
     }
 }
 
