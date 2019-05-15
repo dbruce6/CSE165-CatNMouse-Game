@@ -72,7 +72,7 @@ void timer(int id){
         }
 
         if(singleton->touchCheese(singleton->xpos, singleton->ypos)) {
-            cout << "Score:\t" << singleton->score << "/" << singleton->num_Cheese << endl;
+            // cout << "Score:\t" << singleton->score << "/" << singleton->num_Cheese << endl;
         }
 
         for(int i = 0; i < singleton->obstacle.size(); i++) {
@@ -268,7 +268,7 @@ void App::createMap(int i) {
 void App::nextLevel() {
     current_level++;
     if(current_level > levels) {
-        cout << "Final score:\t" << total_score << "/" << total_possible << endl;
+        // cout << "Final score:\t" << total_score << "/" << total_possible << endl;
         if(total_score < total_possible) {
             // cout << "Game Over! Try harder next time!" << endl;
         } else {
@@ -276,7 +276,7 @@ void App::nextLevel() {
         }
         // exit(0);
     } else {
-        cout << "Current score:\t" << total_score << "/" << total_possible << endl;
+        // cout << "Current score:\t" << total_score << "/" << total_possible << endl;
 
         // Clear out all the vectors used!
         map.clear();
