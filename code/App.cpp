@@ -111,7 +111,7 @@ void timer(int id){
         cout << "You finished with the score of " << singleton->total_score << "/" << singleton->total_possible << " at level " << singleton->current_level << " out of the " << singleton->levels << " levels available!" << endl;
         cout << "Too Bad! Trying harder next game!" << endl;
         // How to check if the dying animation is done??? Should only exit after that's done!!!
-        exit(0);
+        // exit(0);
     }
     
     
@@ -270,7 +270,7 @@ void App::nextLevel() {
         } else {
             cout << "CONGRATULATIONS! YOU WIN!" << endl;
         }
-        exit(0);
+        // exit(0);
     } else {
         cout << "Current score:\t" << total_score << "/" << total_possible << endl;
 
