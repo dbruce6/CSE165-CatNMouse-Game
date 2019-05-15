@@ -51,6 +51,8 @@ public:
 
     void nextLevel();
 
+    void reset();
+
     bool touchWalls(float mx, float my);
 
     bool catTouchWalls(int i, float mx, float my);

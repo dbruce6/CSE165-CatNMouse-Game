@@ -260,8 +260,8 @@ void App::createMap(int i) {
     }
     gameOver = new TextBox("GAME OVER!", -0.25, 0, GLUT_BITMAP_HELVETICA_18, 1.0, 0.0, 0.0, 500);
     // string temp = "Score: " + to_string(total_score) + "/" + to_string(total_possible) + " at level " + to_string(current_level) + " out of the " + to_string(levels) + " levels available!";
-    string temp = "Level " + to_string(current_level) + "/" + to_string(levels) + " Score " + to_string(score) + "/" + to_string(num_Cheese);
-    DisplayScore = new TextBox(temp.c_str(), -2.0, -0.9, GLUT_BITMAP_HELVETICA_18, 1.0, 1.0, 1.0, 500);
+    // string temp = "Level " + to_string(current_level) + "/" + to_string(levels) + " Score " + to_string(score) + "/" + to_string(num_Cheese);
+    // DisplayScore = new TextBox(temp.c_str(), -2.0, -0.9, GLUT_BITMAP_HELVETICA_18, 1.0, 1.0, 1.0, 500);
     // cout << "Done printing" << endl;
 }
 
@@ -292,6 +292,23 @@ void App::nextLevel() {
 
         createMap(current_level);
     }
+}
+
+void App::reset() {
+    // Clear out all the vectors used!
+        map.clear();
+        obstacle.clear();
+        guards.clear();
+        guard_dir.clear();
+        cheeses.clear();
+        eaten.clear();
+
+        // Reset the statistics for the level
+        num_Cheese = 0;
+        score = 0;
+        current_level = 1;
+
+        createMap(current_level);
 }
 
 bool App::touchWalls(float mx, float my) {
@@ -358,6 +375,9 @@ bool App::withinBounds(float mx, float my) {
 }
 
 void App::draw() {
+    // Testing:
+    string temp = "Level " + to_string(current_level) + "/" + to_string(levels) + " Score " + to_string(score) + "/" + to_string(num_Cheese);
+    DisplayScore = new TextBox(temp.c_str(), -2.0, -0.9, GLUT_BITMAP_HELVETICA_18, 1.0, 1.0, 1.0, 500);
     DisplayScore->draw();
     // End of Level or level-ending Stuff here:
     // if(explode) {
