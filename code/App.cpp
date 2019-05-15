@@ -259,8 +259,9 @@ void App::createMap(int i) {
         // cout << endl;
     }
     gameOver = new TextBox("GAME OVER!", -0.25, 0, GLUT_BITMAP_HELVETICA_18, 1.0, 0.0, 0.0, 500);
-    string temp = "You finished with the score of " + to_string(total_score) + " out of " + to_string(total_possible) + " at level " + to_string(current_level) + " out of the " + to_string(levels) + " levels available!";
-    DisplayScore = new TextBox(temp.c_str(), -1.0, -0.2, GLUT_BITMAP_HELVETICA_18, 1.0, 1.0, 1.0, 200);
+    // string temp = "Score: " + to_string(total_score) + "/" + to_string(total_possible) + " at level " + to_string(current_level) + " out of the " + to_string(levels) + " levels available!";
+    string temp = "Level " + to_string(current_level) + "/" + to_string(levels) + " Score " + to_string(score) + "/" + to_string(num_Cheese);
+    DisplayScore = new TextBox(temp.c_str(), -2.0, -0.9, GLUT_BITMAP_HELVETICA_18, 1.0, 1.0, 1.0, 500);
     // cout << "Done printing" << endl;
 }
 
@@ -357,6 +358,7 @@ bool App::withinBounds(float mx, float my) {
 }
 
 void App::draw() {
+    DisplayScore->draw();
     // End of Level or level-ending Stuff here:
     // if(explode) {
     //     explosion->draw(0.2);
@@ -371,17 +373,17 @@ void App::draw() {
         mushroom->draw(0.1);
         // Drawing the map itself and obstacles
         for(int i = 0; i < map.size(); i++) {
-            map[i]->draw(0.1f);
+            map[i]->draw(-0.1f);
         }
         for(int i = 0; i < guards.size(); i++) {
             guards[i]->draw(guard_dir[i]);
         }
         for(int i = 0; i < obstacle.size(); i++) {
-            obstacle[i]->draw(0.5f);
+            obstacle[i]->draw(-0.5f);
         }
         for(int i = 0; i < cheeses.size(); i++) {
             if(!eaten.at(i)) {
-                cheeses.at(i)->draw(0.5f);
+                cheeses.at(i)->draw(-0.5f);
             }
         }
     } else {
