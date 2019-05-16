@@ -323,6 +323,9 @@ void App::keyDown(unsigned char key, float x, float y) {
         exit(0);
     }
     if(key == 'w') {
+        if(start) {
+            start = false;
+        }
         dir = 1;
         up = true;
         mouse->setMoving(true);
@@ -341,9 +344,6 @@ void App::keyDown(unsigned char key, float x, float y) {
         dir = 2;
         right = true;
         mouse->setMoving(true);
-    }
-    if(key == 'SPACEBAR'){
-      start = false;
     }
 }
 
