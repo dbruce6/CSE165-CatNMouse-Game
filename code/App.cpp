@@ -177,7 +177,6 @@ void App::createMap(int i) {
                             cheeses.push_back(new TexRect("images/cheese/0.png", x, y, blockWidth, blockHeight));
                         }
                 default:
-                    cout <<"Error " << temp << endl;
                     break;
             }
         }
