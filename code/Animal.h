@@ -8,7 +8,6 @@
 
 
 class Animal {
-// float x, y, w, h, r, g, b;
 float z;
 std::vector<AnimatedRect*> animation;
     
@@ -16,8 +15,6 @@ public:
     
     Animal(std::string="images/mouse/",float=0.0f, float=0.0f, float=0.5f, float=0.4f, float=0.2f, float=1.0f, float=1.0f, float=1.0f);
     Animal(std::string="images/mouse/",float=0.0f, float=0.0f, float=0.1f, float=0.1f);
-
-    enum Direction { Left, Up, Right, Down};  //0, 1, 2, 3
     
     float getX() const;
     float getY() const;

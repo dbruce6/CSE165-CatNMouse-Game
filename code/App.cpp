@@ -307,9 +307,6 @@ void App::keyUp(unsigned char key, float x, float y) {
     if(key == 'r' && !alive) {
         reset();
     }
-    if(key == ' '){
-      start = false;
-    }
 }
 
 void App::keyDown(unsigned char key, float x, float y) {
@@ -335,6 +332,9 @@ void App::keyDown(unsigned char key, float x, float y) {
         dir = 2;
         right = true;
         mouse->setMoving(true);
+    }
+    if(key == ' '){
+      start = false;
     }
 }
 
@@ -394,6 +394,6 @@ App::~App(){
     guards.clear();
     cheeses.clear();
     eaten.clear();
-    
+
     std::cout << "Exiting..." << std::endl;
 }
