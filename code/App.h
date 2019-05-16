@@ -9,6 +9,7 @@
 #include "Layout.h"
 #include "Animal.h"
 #include "Mouse.h"
+#include "Cat.h"
 #include "vector"
 
 
@@ -23,8 +24,8 @@ float mapWidth, mapHeight, mapHalfWidth, mapHalfHeight;
 // std::vector<Block*> grid;
 std::vector<TexRect*> map;
 std::vector<TexRect*> obstacle;
-std::vector<Animal*> guards;
-std::vector<int> guard_dir;
+std::vector<Cat*> guards;
+// std::vector<int> guard_dir;
 std::vector<TexRect*> cheeses;
 std::vector<bool> eaten;
 

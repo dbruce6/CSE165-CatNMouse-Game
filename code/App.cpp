@@ -28,20 +28,20 @@ void timer(int id){
 
     for(int i = 0; i < singleton->guards.size(); i++) {
         bool cat_in_graphic = singleton->withinBounds(singleton->guards[i]->getX(), singleton->guards[i]->getY() );
-        bool cat_not_hitting_walls = !singleton->catTouchWalls(i, singleton->guards[i]->getX(), singleton->guards[i]->getY());
+        bool cat_not_hitting_walls = !singleton->guards.at(i)->TouchWalls(singleton->map, singleton->obstacle, singleton->speed, singleton->guards.at(i)->getX(), singleton->guards.at(i)->getY());
         bool catOK = cat_in_graphic && cat_not_hitting_walls;
         if(!catOK) {
             // cout << "NOT WITHIN BOUND!!!" << endl;
-            if(singleton->guard_dir[i] == 0) {
+            if(singleton->guards.at(i)->getDir() == 0) {
                 // cout << "Changing direction to Right" << endl;
-                singleton->guard_dir.at(i) = 2;
+                singleton->guards.at(i)->setDir(2);
             } else {
                 // cout << "Changing direction to Left" << endl;
-                singleton->guard_dir.at(i) = 0;
+                singleton->guards.at(i)->setDir(0);
             }
         }
 
-        if(singleton->guard_dir[i] == 0) {  // Going Left
+        if(singleton->guards.at(i)->getDir() == 0) {  // Going Left
             singleton->guards[i]->setX(singleton->guards[i]->getX() - singleton->speed);
         } else {    // Going Right
             singleton->guards[i]->setX(singleton->guards[i]->getX() + singleton->speed);
@@ -234,8 +234,9 @@ void App::createMap(int i) {
                         }
                 case 3: {   // Cat or some patrolling bot here:
                             // Cats will patrol left to right
-                            guards.push_back(new Animal("images/cat/", x, y, 1.0f, 0.2f, 0.2f));
-                            guard_dir.push_back(0);
+                            guards.push_back(new Cat(x, y, 1.0f, blockWidth/3, blockHeight/3));
+                            // guards.push_back(new Animal("images/cat/", x, y, 1.0f, 0.2f, 0.2f));
+                            // guard_dir.push_back(0);
                             break;
                         }
                 case 4: {   // Walls that form the layout of the level:
@@ -286,7 +287,7 @@ void App::nextLevel() {
         map.clear();
         obstacle.clear();
         guards.clear();
-        guard_dir.clear();
+        // guard_dir.clear();
         cheeses.clear();
         eaten.clear();
 
@@ -303,7 +304,7 @@ void App::reset() {
     map.clear();
     obstacle.clear();
     guards.clear();
-    guard_dir.clear();
+    // guard_dir.clear();
     cheeses.clear();
     eaten.clear();
 
@@ -332,29 +333,29 @@ bool App::touchWalls(float mx, float my) {
     return false;
 }
 
-bool App::catTouchWalls(int j, float mx, float my) {
-    // cout << "Checking if touching walls" << endl;
-    for(int i = 0; i < map.size(); i++) {
-        // cout << "Checking" << endl;
-        // Checking all 4 corners:
-        if( map[i]->contains(mx+speed, my) ||
-            map[i]->contains(mx+guards.at(j)->getW(), my) ||
-            map[i]->contains(mx+guards.at(j)->getW(), my-guards.at(j)->getH()+speed ) ||
-            map[i]->contains(mx+speed, my-guards.at(j)->getH()) ) {
-            return true;
-        }
-    }
-    for(int i = 0; i < obstacle.size(); i++) {
-        // Checking all 4 corners:
-        if( obstacle[i]->contains(mx+speed, my) ||
-            obstacle[i]->contains(mx+guards.at(j)->getW(), my) ||
-            obstacle[i]->contains(mx+guards.at(j)->getW(), my-guards.at(j)->getH()+speed ) ||
-            obstacle[i]->contains(mx+speed, my-guards.at(j)->getH()) ) {
-            return true;
-        }
-    }
-    return false;
-}
+// bool App::catTouchWalls(int j, float mx, float my) {
+//     // cout << "Checking if touching walls" << endl;
+//     for(int i = 0; i < map.size(); i++) {
+//         // cout << "Checking" << endl;
+//         // Checking all 4 corners:
+//         if( map[i]->contains(mx+speed, my) ||
+//             map[i]->contains(mx+guards.at(j)->getW(), my) ||
+//             map[i]->contains(mx+guards.at(j)->getW(), my-guards.at(j)->getH()+speed ) ||
+//             map[i]->contains(mx+speed, my-guards.at(j)->getH()) ) {
+//             return true;
+//         }
+//     }
+//     for(int i = 0; i < obstacle.size(); i++) {
+//         // Checking all 4 corners:
+//         if( obstacle[i]->contains(mx+speed, my) ||
+//             obstacle[i]->contains(mx+guards.at(j)->getW(), my) ||
+//             obstacle[i]->contains(mx+guards.at(j)->getW(), my-guards.at(j)->getH()+speed ) ||
+//             obstacle[i]->contains(mx+speed, my-guards.at(j)->getH()) ) {
+//             return true;
+//         }
+//     }
+//     return false;
+// }
 
 bool App::touchCheese(float mx, float my) {
     for(int i = 0; i < cheeses.size(); i++) {
@@ -408,7 +409,7 @@ void App::draw() {
             map[i]->draw(-0.1f);
         }
         for(int i = 0; i < guards.size(); i++) {
-            guards[i]->draw(guard_dir[i]);
+            guards[i]->draw(guards[i]->getDir());
         }
         for(int i = 0; i < obstacle.size(); i++) {
             obstacle[i]->draw(-0.5f);
