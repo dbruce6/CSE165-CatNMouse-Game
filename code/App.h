@@ -14,38 +14,38 @@
 
 
 class App: public GlutApp {
-// enum Direction { Left, Up, Right, Down};  //0, 1, 2, 3
+    // enum Direction { Left, Up, Right, Down};  //0, 1, 2, 3
 
-int dir;
-int levels, current_level;
-int total_score, total_possible;
-float mapWidth, mapHeight, mapHalfWidth, mapHalfHeight;
+    int dir;
+    int levels, current_level;
+    int total_score, total_possible;
+    float mapWidth, mapHeight, mapHalfWidth, mapHalfHeight;
 
-// std::vector<Block*> grid;
-std::vector<TexRect*> map;
-std::vector<TexRect*> obstacle;
-std::vector<Cat*> guards;
-// std::vector<int> guard_dir;
-std::vector<TexRect*> cheeses;
-std::vector<bool> eaten;
+    // std::vector<Block*> grid;
+    std::vector<TexRect*> map;
+    std::vector<TexRect*> obstacle;
+    std::vector<Cat*> guards;
+    // std::vector<int> guard_dir;
+    std::vector<TexRect*> cheeses;
+    std::vector<bool> eaten;
 
 
-TexRect* mushroom;
-TexRect* lose;
-TextBox* gameOver;
-TextBox* DisplayScore;
-// Rect* projectile;
-// AnimatedRect* explosion;
-Mouse* mouse;
-AnimatedRect* death;
-float xpos, ypos, speed;
-int num_Cheese;
-int score;
+    TexRect* mushroom;
+    TexRect* lose;
+    // TextBox* gameOver;
+    TextBox* DisplayScore;
+    // Rect* projectile;
+    // AnimatedRect* explosion;
+    Mouse* mouse;
+    AnimatedRect* death;
+    float xpos, ypos, speed;
+    int num_Cheese;
+    int score;
 
-bool up, down, left, right;
-// bool explode;
-bool alive;
-bool start;
+    bool up, down, left, right;
+    // bool explode;
+    bool alive;
+    bool start;
     
 public:
     

@@ -49,3 +49,7 @@ void Mouse::draw(int dir) {
         notMoving[dir]->draw(getZ());
     }
 }
+
+Mouse::~Mouse() {
+    notMoving.clear();
+}
