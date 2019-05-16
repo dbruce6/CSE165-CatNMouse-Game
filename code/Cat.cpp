@@ -5,9 +5,6 @@
 #include <sstream>
 #include <cstdlib>
 #include <vector>
-// #include <stdio.h>      /* printf, scanf, puts, NULL */
-// #include <stdlib.h>     /* srand, rand */
-// #include <time.h>       /* time */
 #include "Cat.h"
 
 using namespace std;
@@ -26,9 +23,7 @@ bool Cat::setDir(int direction) {
 }
 
 bool Cat::TouchWalls(std::vector<TexRect*> map, std::vector<TexRect*>obstacle, float speed, float mx, float my) {
-    // cout << "Checking if touching walls" << endl;
     for(int i = 0; i < map.size(); i++) {
-        // cout << "Checking" << endl;
         // Checking all 4 corners:
         if( map[i]->contains(mx+speed, my) ||
             map[i]->contains(mx+getW(), my) ||

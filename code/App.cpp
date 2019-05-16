@@ -189,7 +189,10 @@ void App::createMap(int i) {
 void App::nextLevel() {
     current_level++;
     if(current_level > levels) {
-        // TODO
+        alive = false;
+        death->setX(mouse->getX());
+        death->setY(mouse->getY());
+        death->playOnce();
     } else {
         // Clear out all the vectors used!
         map.clear();
