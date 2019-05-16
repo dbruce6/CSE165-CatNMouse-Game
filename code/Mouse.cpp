@@ -5,9 +5,6 @@
 #include <sstream>
 #include <cstdlib>
 #include <vector>
-// #include <stdio.h>      /* printf, scanf, puts, NULL */
-// #include <stdlib.h>     /* srand, rand */
-// #include <time.h>       /* time */
 #include "Mouse.h"
 
 using namespace std;
