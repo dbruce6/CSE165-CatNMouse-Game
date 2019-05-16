@@ -8,6 +8,7 @@
 // #include "Block.h"
 #include "Layout.h"
 #include "Animal.h"
+#include "Mouse.h"
 #include "vector"
 
 
@@ -33,7 +34,7 @@ TextBox* gameOver;
 TextBox* DisplayScore;
 // Rect* projectile;
 // AnimatedRect* explosion;
-Animal* mouse;
+Mouse* mouse;
 AnimatedRect* death;
 float xpos, ypos, speed;
 int num_Cheese;

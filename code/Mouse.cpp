@@ -12,10 +12,25 @@
 
 using namespace std;
 
-Mouse::Mouse(float x, float y, float z, float w, float h, float r, float g, float b): Animal("images/mouse/", x, y, 1.0f, 0.1f, 0.1f) {
-    moving = false;
+Mouse::Mouse(float x, float y, float z, float w, float h): Animal("images/mouse/", x, y, z, w, h) {
+    moving = true;
     for(int i = 0; i < 4; i++) {
-        // TODO
+        string filename = "images/mousestills/" + to_string(i) + ".png";
+        notMoving.push_back(new TexRect(filename.c_str(), x, y, w, h));
+    }
+}
+
+void Mouse::setX(float x) {
+    Animal::setX(x);
+    for(int i = 0; i < notMoving.size(); i++) {
+        notMoving[i]->setX(x);
+    }
+}
+
+void Mouse::setY(float y) {
+    Animal::setY(y);
+    for(int i = 0; i < notMoving.size(); i++) {
+        notMoving[i]->setY(y);
     }
 }
 
