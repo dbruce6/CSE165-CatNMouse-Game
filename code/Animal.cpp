@@ -22,11 +22,6 @@ Animal::Animal(string fileLoc, float x, float y, float z, float w, float h, floa
         animation[i]->setG(g);
         animation[i]->setB(b);
     }
-    death = new AnimatedRect("images/dyinganimation/dyinganimation.png", 4, 4, 100, true, true, x, y, w, h);
-    death->setR(r);
-    death->setG(g);
-    death->setB(b);
-    alive = true;
 }
 
 Animal::Animal(string fileLoc, float x, float y, float w, float h): z(0.5f) {
@@ -39,21 +34,12 @@ Animal::Animal(string fileLoc, float x, float y, float w, float h): z(0.5f) {
         animation[i]->setG(1.0f);
         animation[i]->setB(1.0f);
     }
-    death = new AnimatedRect("images/dyinganimation/dyinganimation.png", 4, 4, 100, true, true, x, y, w, h);
-    death->setR(1.0f);
-    death->setG(1.0f);
-    death->setB(1.0f);
-    alive = true;
 }
 
 Animal::~Animal() {
     for(int i = 0; i < animation.size(); i++) {
         delete animation[i];
     }
-}
-
-void Animal::setStatus(bool a) {
-    this->alive = a;
 }
 
 float Animal::getX() const {
@@ -139,34 +125,8 @@ bool Animal::contains(float px, float py) const {
 }
 
 void Animal::draw(int dir) {
-    if(alive) {
-        animation[dir]->draw(z);
-    } else {
-        death->draw(z);
-        // death->playOnce();
-    }
-    
+    animation[dir]->draw(z);
 }
-
-// void Animal::draw(Direction dir) {
-//     animation[translate(dir)]->draw(z);
-// }
-
-// int Animal::translate(Direction dir) {
-//     switch (dir) {
-//         case Left:
-//             return 0;
-//         case Up:
-//             return 1;
-//         case Right:
-//             return 2;
-//         case Down:
-//             return 3;
-//         default:
-//             cout << "ERROR WRONG DIRECTION TYPE!" << endl;
-//             return -1;
-//     }
-// }
 
 void Animal::redrawScene(){
     glutPostRedisplay();
