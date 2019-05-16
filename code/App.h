@@ -30,6 +30,7 @@ std::vector<bool> eaten;
 
 
 TexRect* mushroom;
+TexRect* lose;
 TextBox* gameOver;
 TextBox* DisplayScore;
 // Rect* projectile;

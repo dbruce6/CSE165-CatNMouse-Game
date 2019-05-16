@@ -222,6 +222,7 @@ void App::createMap(int i) {
                             // cout << "testing" << endl;
                             // cout << "Color RGB:\t" << mouse->getR() << ", " << mouse->getG() << ", " << mouse->getB() << endl;
                             death = new AnimatedRect("images/dyinganimation/dyinganimation.png", 4, 4, 75, true, true, x, y, 0.1f, 0.1f);
+
                             break;
                         }
                 case 2: {   // Goal:
@@ -262,7 +263,8 @@ void App::createMap(int i) {
         }
         // cout << endl;
     }
-    gameOver = new TextBox("GAME OVER!", -0.25, 0, GLUT_BITMAP_HELVETICA_18, 1.0, 0.0, 0.0, 500);
+  //  gameOver = new TextBox("GAME OVER!", -0.25, 0, GLUT_BITMAP_HELVETICA_18, 1.0, 0.0, 0.0, 500);
+    lose = new TexRect("images/gameoverscreen/gameoverscreen.png", -2, 1, 4, 2);
     // string temp = "Score: " + to_string(total_score) + "/" + to_string(total_possible) + " at level " + to_string(current_level) + " out of the " + to_string(levels) + " levels available!";
     // string temp = "Level " + to_string(current_level) + "/" + to_string(levels) + " Score " + to_string(score) + "/" + to_string(num_Cheese);
     // DisplayScore = new TextBox(temp.c_str(), -2.0, -0.9, GLUT_BITMAP_HELVETICA_18, 1.0, 1.0, 1.0, 500);
@@ -420,7 +422,8 @@ void App::draw() {
         }
     } else {
         death->draw(1.0);
-        gameOver->draw();
+       // gameOver->draw();
+        lose->draw(1.0);
     }
     // death->draw(0.2);
 }
