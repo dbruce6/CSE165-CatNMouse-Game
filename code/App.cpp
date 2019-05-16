@@ -159,6 +159,7 @@ App::App(int argc, char** argv, int width, int height, const char* title): GlutA
     // projectile->setR(1.0);
     // projectile->setG(0.0);
     // projectile->setB(0.0);
+    start = true;
     up = false;
     down = false;
     right = false;
@@ -183,17 +184,6 @@ App::App(int argc, char** argv, int width, int height, const char* title): GlutA
     singleton = this;
 
     timer(1);
-}
-//set up a startup screen
-void App::startUp() {
-  instructions = new TextBox("Collect all the cheese! Avoid the cats and poison! Press SPACE to play!", -0.25, 0, GLUT_BITMAP_HELVETICA_18, 1.0, 0.0, 0.0, 500);f
-  bool start = true;
-  //when the player presses SPACE, start turns false and it should create the map
-  if (start = false){
-//create the map
-  //createMap
-  }
-
 }
 
 void App::createMap(int i) {
@@ -226,7 +216,9 @@ void App::createMap(int i) {
                             // projectile->setR(0.0);
                             // projectile->setG(0.0);
                             // projectile->setB(0.0);
-                            mouse = new Animal("images/mouse/", x, y, 1.0f, 0.1f, 0.1f);
+                            mouse = new Mouse(x, y, 1.0f, 0.1f, 0.1f);
+                            mouse->setMoving(false);
+                            // mouse = new Animal("images/mouse/", x, y, 1.0f, 0.1f, 0.1f);
                             // cout << "testing" << endl;
                             // cout << "Color RGB:\t" << mouse->getR() << ", " << mouse->getG() << ", " << mouse->getB() << endl;
                             death = new AnimatedRect("images/dyinganimation/dyinganimation.png", 4, 4, 75, true, true, x, y, 0.1f, 0.1f);
@@ -270,7 +262,7 @@ void App::createMap(int i) {
         }
         // cout << endl;
     }
-    gameOver = new TextBox("GAME OVER!", -0.25, 0, GLUT_BITMAP_HELVETICA_18, 1.0, 0.0, 0.0, 500);f
+    gameOver = new TextBox("GAME OVER!", -0.25, 0, GLUT_BITMAP_HELVETICA_18, 1.0, 0.0, 0.0, 500);
     // string temp = "Score: " + to_string(total_score) + "/" + to_string(total_possible) + " at level " + to_string(current_level) + " out of the " + to_string(levels) + " levels available!";
     // string temp = "Level " + to_string(current_level) + "/" + to_string(levels) + " Score " + to_string(score) + "/" + to_string(num_Cheese);
     // DisplayScore = new TextBox(temp.c_str(), -2.0, -0.9, GLUT_BITMAP_HELVETICA_18, 1.0, 1.0, 1.0, 500);
@@ -395,9 +387,6 @@ void App::draw() {
     //string instr = "Collect all the cheese and reach the goal! Avoid the cats and poison!";
     //Intructions = new TextBox(instr.c_str(), -2.0, -0.9, GLUT_BITMAP_HELVETICA_18, 1.0, 1.0, 1.0, 500);
     //Instructions->draw();
-if (start){}
-    instructions->draw();
-  }
 
     string temp = "Level " + to_string(current_level) + "/" + to_string(levels) + " Score " + to_string(score) + "/" + to_string(num_Cheese);
     DisplayScore = new TextBox(temp.c_str(), -2.0, -0.9, GLUT_BITMAP_HELVETICA_18, 1.0, 1.0, 1.0, 500);
@@ -442,21 +431,25 @@ void App::keyUp(unsigned char key, float x, float y) {
         // std::cout << "Done going up!" << std::endl;
         // dir = 1;
         up = false;
+        mouse->setMoving(false);
     }
     if(key == 'a') {
         // std::cout << "Done going left!" << std::endl;
         // dir = 0;
         left = false;
+        mouse->setMoving(false);
     }
     if(key == 's') {
         // std::cout << "Done going down!" << std::endl;
         // dir = 3;
         down = false;
+        mouse->setMoving(false);
     }
     if(key == 'd') {
         // std::cout << "Done going right!" << std::endl;
         // dir = 2;
         right = false;
+        mouse->setMoving(false);
     }
     if(key == 'r' && !alive) {
         reset();
@@ -475,21 +468,25 @@ void App::keyDown(unsigned char key, float x, float y){
         // std::cout << "Going up!" << std::endl;
         dir = 1;
         up = true;
+        mouse->setMoving(true);
     }
     if(key == 'a') {
         // std::cout << "Going left!" << std::endl;
         dir = 0;
         left = true;
+        mouse->setMoving(true);
     }
     if(key == 's') {
         // std::cout << "Going down!" << std::endl;
         dir = 3;
         down = true;
+        mouse->setMoving(true);
     }
     if(key == 'd') {
         // std::cout << "Going right!" << std::endl;
         dir = 2;
         right = true;
+        mouse->setMoving(true);
     }
 }
 
@@ -498,18 +495,22 @@ void App::specialKeyUp(int key, float x, float y) {
     if(key == 101) {
         // std::cout << "Going up!" << std::endl;
         up = false;
+        mouse->setMoving(false);
     }
     if(key == 100) {
         // std::cout << "Going left!" << std::endl;
         left = false;
+        mouse->setMoving(false);
     }
     if(key == 103) {
         // std::cout << "Going down!" << std::endl;
         down = false;
+        mouse->setMoving(false);
     }
     if(key == 102) {
         // std::cout << "Going right!" << std::endl;
         right = false;
+        mouse->setMoving(false);
     }
 }
 
@@ -519,21 +520,25 @@ void App::specialKeyDown(int key, float x, float y){
         // std::cout << "Going up!" << std::endl;
         dir = 1;
         up = true;
+        mouse->setMoving(true);
     }
     if(key == 100) {
         // std::cout << "Going left!" << std::endl;
         dir = 0;
         left = true;
+        mouse->setMoving(true);
     }
     if(key == 103) {
         // std::cout << "Going down!" << std::endl;
         dir = 3;
         down = true;
+        mouse->setMoving(true);
     }
     if(key == 102) {
         // std::cout << "Going right!" << std::endl;
         dir = 2;
         right = true;
+        mouse->setMoving(true);
     }
 }
 

@@ -43,6 +43,7 @@ int score;
 bool up, down, left, right;
 // bool explode;
 bool alive;
+bool start;
     
 public:
     
