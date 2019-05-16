@@ -27,6 +27,7 @@ class App: public GlutApp {
 
     TexRect* mushroom;
     TexRect* lose;
+    TexRect* startscreen;
     TextBox* DisplayScore;
     Mouse* mouse;
     AnimatedRect* death;

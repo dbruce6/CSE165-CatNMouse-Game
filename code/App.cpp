@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <vector>
 #include "App.h"
+#define SPACEBAR 32
 
 using namespace std;
 
@@ -182,6 +183,7 @@ void App::createMap(int i) {
         }
     }
     lose = new TexRect("images/gameoverscreen/gameoverscreen.png", -2, 1, 4, 2);
+    startscreen = new TexRect("images/startupscreen/startupscreen.png", -2, 1, 4, 2);
 }
 
 void App::nextLevel() {
@@ -259,6 +261,11 @@ bool App::withinBounds(float mx, float my) {
 
 void App::draw() {
     // Scoreboard
+	if (start==true){
+		startscreen->draw(1.0);
+	} else {
+		startscreen->draw(-1.0);
+	}
     string temp = "Level " + to_string(current_level) + "/" + to_string(levels) + " Score " + to_string(score) + "/" + to_string(num_Cheese);
     DisplayScore = new TextBox(temp.c_str(), -2.0, -0.9, GLUT_BITMAP_HELVETICA_18, 1.0, 1.0, 1.0, 500);
     DisplayScore->draw();
@@ -332,7 +339,7 @@ void App::keyDown(unsigned char key, float x, float y) {
         right = true;
         mouse->setMoving(true);
     }
-    if(key == ' '){
+    if(key == 'SPACEBAR'){
       start = false;
     }
 }
@@ -377,6 +384,7 @@ void App::specialKeyDown(int key, float x, float y) {
         right = true;
         mouse->setMoving(true);
     }
+
 }
 
 App::~App(){
