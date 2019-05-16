@@ -394,5 +394,6 @@ App::~App(){
     guards.clear();
     cheeses.clear();
     eaten.clear();
+    
     std::cout << "Exiting..." << std::endl;
 }
