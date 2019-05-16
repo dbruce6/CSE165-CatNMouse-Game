@@ -17,7 +17,7 @@ App* singleton;
 void timer(int id){
     // This will get called every 16 milliseconds after
     // you call it once
-    
+
     // If you want to manipulate the app in here
     // do it through the singleton pointer
 
@@ -64,7 +64,7 @@ void timer(int id){
         if (singleton->right){
             singleton->xpos +=singleton->speed;
         }
-        
+
         if(singleton->withinBounds(singleton->xpos, singleton->ypos) && !singleton->touchWalls(singleton->xpos, singleton->ypos)) {
             singleton->mouse->setX(singleton->xpos);
             singleton->mouse->setY(singleton->ypos);
@@ -96,7 +96,7 @@ void timer(int id){
             }
         }
 
-         if(singleton->mushroom->contains(singleton->xpos, singleton->ypos)) {  
+         if(singleton->mushroom->contains(singleton->xpos, singleton->ypos)) {
                 // singleton->explode = true;
                 // singleton->explosion->playOnce();
                 singleton->redraw();
@@ -113,13 +113,14 @@ void timer(int id){
         // How to check if the dying animation is done??? Should only exit after that's done!!!
         // exit(0);
     }
-    
-    
+
+
     glutTimerFunc(16, timer, id);
 }
 
 
 App::App(int argc, char** argv, int width, int height, const char* title): GlutApp(argc, argv, width, height, title){
+
     mapWidth = width/250.0;
     mapHeight = height/250.0;
     // cout << "width/height:\t" << mapWidth << "/" << mapHeight << endl;
@@ -128,7 +129,7 @@ App::App(int argc, char** argv, int width, int height, const char* title): GlutA
     // cout << mapHalfWidth << ", " << mapHalfHeight<<endl;
 
     speed = 0.01;
-    
+
     // map/0.txt containsthe number of maps available besides itself
     // map/1.txt and so on will contain the map/layout of the level
     // Using: 0 for empty space, 1 starting loc, 2 for ending loc, 3 for CAT, 4 for obstacles
@@ -183,6 +184,17 @@ App::App(int argc, char** argv, int width, int height, const char* title): GlutA
 
     timer(1);
 }
+//set up a startup screen
+void App::startUp() {
+  instructions = new TextBox("Collect all the cheese! Avoid the cats and poison! Press SPACE to play!", -0.25, 0, GLUT_BITMAP_HELVETICA_18, 1.0, 0.0, 0.0, 500);f
+  bool start = true;
+  //when the player presses SPACE, start turns false and it should create the map
+  if (start = false){
+//create the map
+  //createMap
+  }
+
+}
 
 void App::createMap(int i) {
     string filename = "maps/" + to_string(i) + ".txt";
@@ -204,12 +216,12 @@ void App::createMap(int i) {
         for(int j = 0; j < c; j++) {    // columns
             float x = -mapHalfWidth+j*blockWidth;
             float y = mapHalfHeight-i*blockHeight;
-            
+
             int temp;
             infile >> temp;
             // cout << temp << " ";
             switch (temp) {
-                case 1: {   // Starting the mouse: 
+                case 1: {   // Starting the mouse:
                             // projectile = new Rect(x, y, 0.1, 0.1);
                             // projectile->setR(0.0);
                             // projectile->setG(0.0);
@@ -220,7 +232,7 @@ void App::createMap(int i) {
                             death = new AnimatedRect("images/dyinganimation/dyinganimation.png", 4, 4, 75, true, true, x, y, 0.1f, 0.1f);
                             break;
                         }
-                case 2: {   // Goal: 
+                case 2: {   // Goal:
                             mushroom = new TexRect("images/goal/0.png", x, y, blockWidth, blockHeight);
                             // (const char* map_filename, int rows, int cols, int rate, bool visible=false, bool animated=false, float x=0, float y=0, float w=0.5, float h=0.5)
                             // explosion = new AnimatedRect("fireball.bmp", 6, 6, 50, true, true, x, y, blockWidth, blockHeight);
@@ -234,7 +246,7 @@ void App::createMap(int i) {
                             guard_dir.push_back(0);
                             break;
                         }
-                case 4: {   // Walls that form the layout of the level: 
+                case 4: {   // Walls that form the layout of the level:
                             // cout << "block" << endl;
                             map.push_back(new TexRect("images/wall/wall.png", x, y, blockWidth, blockHeight));     //White walls
                             break;
@@ -251,14 +263,14 @@ void App::createMap(int i) {
                             eaten.push_back(false);
                             cheeses.push_back(new TexRect("images/cheese/0.png", x, y, blockWidth, blockHeight));
                         }
-                default: 
+                default:
                     // cout <<"Error " << temp << endl;
                     break;
             }
         }
         // cout << endl;
     }
-    gameOver = new TextBox("GAME OVER!", -0.25, 0, GLUT_BITMAP_HELVETICA_18, 1.0, 0.0, 0.0, 500);
+    gameOver = new TextBox("GAME OVER!", -0.25, 0, GLUT_BITMAP_HELVETICA_18, 1.0, 0.0, 0.0, 500);f
     // string temp = "Score: " + to_string(total_score) + "/" + to_string(total_possible) + " at level " + to_string(current_level) + " out of the " + to_string(levels) + " levels available!";
     // string temp = "Level " + to_string(current_level) + "/" + to_string(levels) + " Score " + to_string(score) + "/" + to_string(num_Cheese);
     // DisplayScore = new TextBox(temp.c_str(), -2.0, -0.9, GLUT_BITMAP_HELVETICA_18, 1.0, 1.0, 1.0, 500);
@@ -379,6 +391,14 @@ bool App::withinBounds(float mx, float my) {
 
 void App::draw() {
     // Testing:
+    //Display this text as the game begins
+    //string instr = "Collect all the cheese and reach the goal! Avoid the cats and poison!";
+    //Intructions = new TextBox(instr.c_str(), -2.0, -0.9, GLUT_BITMAP_HELVETICA_18, 1.0, 1.0, 1.0, 500);
+    //Instructions->draw();
+if (start){}
+    instructions->draw();
+  }
+
     string temp = "Level " + to_string(current_level) + "/" + to_string(levels) + " Score " + to_string(score) + "/" + to_string(num_Cheese);
     DisplayScore = new TextBox(temp.c_str(), -2.0, -0.9, GLUT_BITMAP_HELVETICA_18, 1.0, 1.0, 1.0, 500);
     DisplayScore->draw();
@@ -389,7 +409,7 @@ void App::draw() {
     // } else {
     // }
 
-    // Drawing the moving parts: 
+    // Drawing the moving parts:
     // projectile->draw();
     if(alive) {
         mouse->draw(dir);
@@ -440,6 +460,9 @@ void App::keyUp(unsigned char key, float x, float y) {
     }
     if(key == 'r' && !alive) {
         reset();
+    }
+    if(key == ' '){
+      start = false;
     }
 }
 
